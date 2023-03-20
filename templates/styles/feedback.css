@@ -1,0 +1,104 @@
+
+	/* Global Styles */
+
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+		font-family: Arial, sans-serif;
+	}
+
+	html, body {
+		height: 100%;
+	}
+
+	body {
+		background-color: #333333;
+		display: flex;
+		align-items: center;
+	}
+
+	.container {
+		flex: 1;
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 20px;
+	}
+
+	/* Header Styles */
+
+	.header {
+		background-color: #DA4242;
+		text-align: center;
+		margin-bottom: 40px;
+		padding: 20px;
+		border-radius: 5px;
+		box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+	}
+
+	.header h1 {
+		font-size: 36px;
+		color: #fff;
+		margin-bottom: 10px;
+	}
+
+	.header p {
+		font-size: 18px;
+		color: #fff;
+	}
+
+	/* Feedback Form Styles */
+
+	.feedback-form {
+		background-color: #fff;
+		padding: 20px;
+		border-radius: 5px;
+		box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+	}
+
+	label {
+		display: block;
+		margin-bottom: 10px;
+		font-size: 18px;
+	}
+
+	.smiley-container {
+		display: flex;
+		justify-content: space-between;
+		margin-bottom: 20px;
+	}
+
+	.smiley {
+		font-size: 40px;
+		cursor: pointer;
+	}
+
+	.smiley:hover {
+		transform: scale(1.2);
+	}
+
+	textarea {
+		display: block;
+		width: 100%;
+		margin-bottom: 20px;
+		font-size: 16px;
+		padding: 10px;
+		border-radius: 5px;
+		border: 1px solid #ccc;
+		resize: vertical;
+	}
+
+	button[type="submit"] {
+		background-color: #4CAF50;
+		color: #fff;
+		font-size: 18px;
+		padding: 10px 20px;
+		border-radius: 5px;
+		border: none;
+		cursor: pointer;
+		transition: background-color 0.3s ease-in-out;
+	}
+
+	button[type="submit"]:hover {
+		background-color: #333;
+	}

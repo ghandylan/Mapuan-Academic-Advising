@@ -1,0 +1,212 @@
+/* -- Header Data -- */
+
+.Welcome{
+    background-color: #DA4242;
+    width: auto;
+    height: 120px;    
+}
+.welcome-name{
+    padding-left: 50px;
+    padding-top: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 61px;
+    color: white;
+}
+
+.MQS{
+    padding-right: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 61px;
+    color: white;
+}
+
+/* -- Dashboard -- */
+
+#outer-div {
+    width: 100%;
+    text-align: center;
+    background-color: #333333
+}
+
+#inner-div {
+    display: inline-block;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: #333333
+}
+
+/* -- Table Header CSS -- */
+
+.th1{
+    text-align: center;
+    font-family: monospace;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 61px;
+    color: white;
+  }
+
+.th2{
+    text-align: center;
+    font-family: monospace;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 61px;
+    color: white;
+  }
+
+.th3{
+    text-align: center;
+    font-family: monospace;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 38px;
+    line-height: 61px;
+    color: white;
+  }
+
+/* -- Table Data CSS -- */
+
+.QueueTotal{
+    position: static;
+    width: 460px;
+    height: 80px;
+    left: 60px;
+    top: 200px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 24px;
+
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 33px;
+}
+
+.Adviser-in-charge{
+    position: static;
+    width: 460px;
+    height: 80px;
+    left: 60px;
+    top: 200px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 24px;
+
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 33px;
+}
+
+.Queue-ID{
+    position: static;
+    width: 460px;
+    height: 80px;
+    left: 60px;
+    top: 200px;
+
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 24px;
+
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 33px;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.flex-child {
+    flex: 1;
+}  
+
+.zoom{
+    position: static;
+    width: 600px;
+    height: 60px;
+    left: 60px;
+    top: 200px;
+    padding-inline-start: 80px;
+
+    background: #FFFFFF;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 33px;
+
+    text-align: left;
+    font-family: Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 61px;
+}
+
+/* -- Button CSS -- */
+
+.Buttons{
+    
+    padding-top: 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Logout{
+    padding-top: 20px;
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 500px;
+    transition-property: background-color,border-color,color,box-shadow,filter;
+    transition-duration: .3s;
+    border: 1px solid transparent;
+    letter-spacing: 2px;
+    min-width: 160px;
+    text-transform: uppercase;
+    white-space: normal;
+    font-weight: 700;
+    text-align: center;
+    padding: 16px 14px 18px;
+    color: black;
+    background-color: #FFD700;
+    height: 48px;
+}
+
+.zoom-link{
+    padding-top: 20px;
+    display: inline-block;
+    outline: none;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    border-radius: 500px;
+    transition-property: background-color,border-color,color,box-shadow,filter;
+    transition-duration: .3s;
+    border: 1px solid transparent;
+    letter-spacing: 2px;
+    min-width: 160px;
+    text-transform: uppercase;
+    white-space: normal;
+    font-weight: 700;
+    text-align: center;
+    padding: 16px 14px 18px;
+    color: black;
+    background-color: #FFD700;
+    height: 48px;
+}

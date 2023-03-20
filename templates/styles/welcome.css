@@ -1,0 +1,144 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    height: 100%;
+}
+
+body {
+    background-color: #333333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    flex: 1;
+    max-width: 1800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header Styles */
+.header {
+    background-color: #DA4242;
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.header h1 {
+    font-size: 36px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 18px;
+    color: #fff;
+}
+
+/* Queueing List Styles */
+.queueing-list {
+    margin-bottom: 30px;
+    background-color: #c6c6c6;
+    padding: 80px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: #333;
+}
+
+h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #DA4242;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 700;
+    margin-top: 0;
+}
+
+.list {
+    height: 300px;
+/* Set the height of the list */
+    overflow-y: scroll;
+/* Add a scroll bar when the list is too long */
+    padding: 1px;
+}
+
+/* CSS for the list items */
+.list-item {
+    margin-bottom: 10px;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0px 2px 2px rgba(216, 140, 140, 0.1);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+}
+
+/* CSS for the column headers */
+.column-header {
+    font-weight: bold;
+    border: 1px solid black;
+    border-radius: 14px;
+    padding: 10px;
+    flex-basis: 20%;
+}
+
+/* CSS for the column values */
+.column-value {
+    border: 1px solid black;
+    border-radius: 14px;
+    padding: 10px;
+    flex-basis: 20%;
+}
+
+/* CSS for the Log Out button */
+/* CSS for the Register button */
+
+#button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.button-out {
+    color: #000000;
+    background-color: #FFD700;
+    padding: 15px 110px;
+    border: none;
+    border-radius: 500px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.button-out:hover {
+    background-color: #f7d563;
+}
+
+.button-register {
+    color: #000000;
+    background-color: #FFD700;
+    padding: 15px 110px;
+    border: none;
+    border-radius: 500px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1px;
+    transition: background-color 0.3s ease-in-out;
+}
+
+.button-register:hover {
+    background-color: #f7d563;
+}
