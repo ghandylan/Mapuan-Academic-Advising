@@ -1,28 +1,39 @@
-from flask import Flask 
-from flask_mysqldb import MySQL 
+from flask import Flask, render_template, request, url_for, redirect, jsonify
+from sqlalchemy import create_engine
+import mariadb
 
-app = Flask(__name__)
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'academic-advising'
+engine = create_engine('mysql+pymysql://root:@localhost:3306/academic-advising')
+app = Flask(__name__, template_folder='templates', static_folder='static')
 
-mysql = MySQL(app)
+
+@app.route('/testme')
+def test():
+    with engine.connect() as conn:
+        result = conn.execute("SELECT * FROM student")
+        for row in result:
+            print(row)
+            return jsonify(row)
+
+
+
 
 @app.route('/')
 def index():
-    try:
-        cur = mysql.connection.cursor()
-        cur.execute('''SELECT 1''')
-        result = cur.fetchone()
-        cur.close()
-        if result[0] == 1:
-            return 'Successfully connected to MySQL database!'
-        else:
-            return 'Failed to connect to MySQL database!'
-    except Exception as e:
-        return f'Error connecting to MySQL database: {str(e)}'
-index()
+    return render_template('index.html')
 
-@app.route('/login', methods=['GET', 'POST'])
-def login
+
+@app.route('/login', methods=['GET', 'POST'])  # index.html
+def login():
+    # cur = conn.cursor
+    if request.method == 'POST':
+        if request.form['email'] == 'admin' and request.form['password'] == 'admin':
+            return redirect(url_for('admin'))
+        elif request.form['email'] == 'student' and request.form['password'] == 'student':
+            return redirect(url_for('student'))
+        else:
+            return redirect(url_for('login'))
+    return render_template('index.html')
+
+
+# if
+# app.run(debug=True)

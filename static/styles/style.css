@@ -94,6 +94,8 @@ body {
 
 .login-form input[type="submit"]:hover {
     background-color: #8a8484;
+/*     make a background for this btn*/
+    color: #4CAF50;
 }
 
 .forgot-password {

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Login Page</title>
-    <link href="styles/style.css" rel="stylesheet" type="text/css">
-    <link rel="icon" type="Acads.png" href="img/icon.png">
+    <link href="../static/styles/style.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="Acads.png" href="../static/styles/style.css">
 </head>
 
 <body>
@@ -12,25 +12,24 @@
     <div class="container">
         <header>
         <div class="head">
-            <img src="img/bg.png" alt="head" class="responsive">
+            <img src="../static/img/bg.png" alt="head" class="responsive">
           </div> 
         </header>
         
         <div class="logo">
-			<img src="img/Acads.png" alt="Logo" class="responsive">
+			<img src="../static/img/Acads.png" alt="Logo" class="responsive">
 		</div>
 
 		<div class="login-form"> 
-			<form action="welcome.html"method="post">
+			<form action="/login"method="post">
 
-                <input type="text" placeholder="Email" name="email" required>
+                <input type="text"  placeholder="Email" name="email" required>
 
 
                 <input type="password" placeholder="Password" name="psw" required>
 
-                <a href="welcome.html">
-                    <input type="submit" value="Login">
-                </a>
+
+                <button type="submit" value="Login" style=" " >Log In</button>
 
 
                 <div class="forgot-password">
