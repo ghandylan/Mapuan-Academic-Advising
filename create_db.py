@@ -29,7 +29,7 @@ CREATE TABLE STUDENT
 
     class_ID INT NOT NULL, # Foreign key
 
-    # isStudent BOOLEAN NOT NULL,
+    isAdmin BOOLEAN NOT NULL,
 
     PRIMARY KEY (student_number)
 );
@@ -40,6 +40,8 @@ CREATE TABLE ADMIN
     admin_email varchar(255) NOT NULL,
     admin_password varchar(255) NOT NULL,
     admin_name varchar(255) NOT NULL,
+    
+    isAdmin BOOLEAN NOT NULL,
 
     PRIMARY KEY (admin_number)
 

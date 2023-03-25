@@ -9,6 +9,10 @@
 
 <body>
 
+{% if error %}
+    <p class="error"><strong>Incorrect password!</strong></p>
+{% endif %}
+
 <div class="container">
     <header>
         <div class="head">
@@ -20,8 +24,10 @@
         <img src="../static/img/Acads.png" alt="Logo" class="responsive">
     </div>
 
+    {#    flash the login error#}
+
     <div class="login-form">
-        <form action="/" method="post">
+        <form action="/login" method="post">
 
             <input type="text" placeholder="Email" name="email" required>
 
