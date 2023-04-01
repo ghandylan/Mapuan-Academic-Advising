@@ -5,15 +5,47 @@
     <meta charset="UTF-8">
     <title>Queueing List</title>
     <link rel="stylesheet" type="text/css" href="../static/styles/welcome.css">
-    <script type="text/javascript" src="{{ url_for('static/scripts', filename='app.js') }}"></script>
+    <script>
+        const logoutUrl = "{{ url_for('logout') }}";
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = logoutUrl;
+            }
+        }
+
+    </script>
 </head>
 
 <body>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            {% if category == 'error' %}
+                <div class="alert alert-success alert-dismissable fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close btn-close-black float-end" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endwith %}
 <div class="container">
     <header class="header">
-        <h1>Welcome to Our Website!</h1>
+        {% if current_user.is_authenticated %}
+            {% if current_user.student_number %}
+                <h1>Welcome, {{ current_user.student_name }}!</h1>
+                {# FIXME: greeting for admin not showing #}
+            {% elif current_user.admin_number %}
+                <h1>Welcome, Admin!</h1>
+            {% endif %}
+        {% else %}
+            <h1>Welcome to Our Website!</h1>
+        {% endif %}
         <p>Mapuan Queueing System</p>
     </header>
+
 
     <section class="queueing-list">
         <h2>Queueing List</h2>
@@ -82,10 +114,11 @@
     </section>
 
     <div id="button-container">
-        <a href="{}">
+        <a href="#" onclick="logout()">
             <button class="button-out">Log Out</button>
         </a>
-        <a href="register.html">
+        <a href="advising.html">
+            {#  FIXME: When Register button is pressed, app is saying that advising.html is no where to be found#}
             <button class="button-register">Register</button>
         </a>
     </div>
