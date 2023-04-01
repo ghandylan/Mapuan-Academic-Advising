@@ -6,6 +6,7 @@ from sqlalchemy.orm import relationship
 my_app = Flask(__name__, template_folder='templates', static_folder='static')
 my_app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/academic_advising'
 my_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+my_app.config['SECRET_KEY'] = 'secret HAHAHAHAH'
 db = SQLAlchemy(my_app)
 
 
@@ -83,27 +84,28 @@ def index():
 
 @my_app.route('/login', methods=['GET', 'POST'])
 def login():
-    if request == 'POST':
-        email = request.form['email']
-        password = request.form['password']
+    if request.method == 'POST':
+        # GET THE EMAIL AND PASSWORD ON THE FORM
+        email = request.form.get('email')
+        password = request.form.get('password')
 
-        user = Student.query.filter_by(student_email=email).first()
-
-        if user is not None and user.student_password == password:
-            session['student_number'] = user.student_number
-            if user.is_student:
+        if email and password:
+            student = Student.query.filter_by(student_email=email, student_password=password).first()
+            if student:
+                session['user_id'] = student.student_number
+                print("student logged in")
+                flash('Logged in successfully', 'success')
                 return redirect(url_for('student_dashboard'))
             else:
-                return redirect(url_for('admin_dashboard'))
+                print("incorrect email or password")
+                flash('Invalid email or password', 'warning')
+                return redirect(url_for('login_page', error='Invalid email or password'))
         else:
-            admin = Admin.query.filter_by(admin_email=email).first()
-            if admin is not None and admin.admin_password == password:
-                session['admin_number'] = admin.admin_number
-                return redirect(url_for('admin_dashboard'))
-            else:
-                return render_template(index.html, error='Invalid email or password')
-    else:
-        return render_template('index.html')
+            print("email or password not provided")
+            flash('Email and password are required', 'error')
+            return redirect(url_for('login_page', error='Email and password are required'))
+
+    return render_template('index.html')
 
 
 @my_app.route('/student_dashboard')
