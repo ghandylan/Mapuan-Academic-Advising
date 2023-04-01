@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify, redirect, url_for, s
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import *
 from sqlalchemy.orm import relationship
+from flask_login import *
 
 my_app = Flask(__name__, template_folder='templates', static_folder='static')
 my_app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/academic_advising'
@@ -9,8 +10,21 @@ my_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 my_app.config['SECRET_KEY'] = 'secret HAHAHAHAH'
 db = SQLAlchemy(my_app)
 
+login_manager = LoginManager()
+login_manager.login_view = '/login'
+login_manager.init_app(my_app)
 
-class Student(db.Model):
+
+@login_manager.user_loader
+def load_user(student_number):
+    return Student.query.get(student_number)
+
+
+def load_admin(admin_number):
+    return Admin.query.get(admin_number)
+
+
+class Student(db.Model, UserMixin):
     __tablename__ = 'student'
 
     student_number = db.Column(String(10), primary_key=True)
@@ -27,8 +41,17 @@ class Student(db.Model):
 
     # is_student = db.Column(Boolean, nullable=False)
 
+    def is_active(self):
+        return True
 
-class Admin(db.Model):
+    def get_id(self):
+        return self.student_number
+
+    def is_authenticated(self):
+        return True
+
+
+class Admin(db.Model, UserMixin):
     __tablename__ = 'admin'
 
     admin_number = db.Column(String(10), primary_key=True)
@@ -38,8 +61,17 @@ class Admin(db.Model):
 
     # is_admin = db.Column(Boolean, nullable=False)
 
+    def is_active(self):
+        return True
 
-class Queue(db.Model):
+    def get_id(self):
+        return self.admin_number
+
+    def is_authenticated(self):
+        return True
+
+
+class Queue(db.Model, UserMixin):
     __tablename__ = 'queue'
 
     queue_id = db.Column(Integer, primary_key=True)
@@ -52,7 +84,7 @@ class Queue(db.Model):
     admin = relationship("Admin", backref="queues")
 
 
-class Feedback(db.Model):
+class Feedback(db.Model, UserMixin):
     __tablename__ = 'feedback'
 
     feedback_id = db.Column(Integer, primary_key=True)
@@ -65,7 +97,7 @@ class Feedback(db.Model):
     admin = relationship("Admin", backref="feedbacks")
 
 
-class Class(db.Model):
+class Class(db.Model, UserMixin):
     __tablename__ = 'class'
 
     class_id = db.Column(Integer, primary_key=True)
@@ -91,17 +123,19 @@ def login():
 
         if email and password:
             student = Student.query.filter_by(student_email=email, student_password=password).first()
+            admin = Admin.query.filter_by(admin_email=email, admin_password=password).first()
             if student:
                 session['user_id'] = student.student_number
-                print("student logged in")
-                flash('Logged in successfully', 'success')
+                login_user(student, remember=True)
                 return redirect(url_for('student_dashboard'))
+            elif admin:
+                session['admin_id'] = admin.admin_number
+                login_user(admin, remember=True)
+                return redirect(url_for('admin_dashboard'))
             else:
-                print("incorrect email or password")
                 flash('Invalid email or password', 'warning')
                 return redirect(url_for('login_page', error='Invalid email or password'))
         else:
-            print("email or password not provided")
             flash('Email and password are required', 'error')
             return redirect(url_for('login_page', error='Email and password are required'))
 
@@ -114,20 +148,24 @@ def student_dashboard():
     user_id = session.get('user_id')
     if user_id:
         user = Student.query.get(user_id)
-        return render_template('welcome.html', user=user)
+        print(user.student_name)
+        flash('Logged in successfully', 'success')
+        return render_template('welcome.html', user=user, username=user.student_name)
     # if not logged in, redirect to login page
     else:
         return redirect(url_for('login'))
 
 
+# FIXME: greeting message not showing
 @my_app.route('/admin_dashboard')
 def admin_dashboard():
     # check if user is logged in
-    admin_id = session.get('admin_id')
-    if admin_id:
-        admin = Admin.query.get(admin_id)
-        return render_template('welcome.html', admin=admin)
-    # if not logged in, redirect to login page
+    user_id = session.get('admin_id')
+    if user_id:
+        user = Admin.query.get(user_id)
+        print(user.admin_name)
+        flash('Logged in successfully', 'success')
+        return render_template('welcome.html', user=user, username=user.admin_name)
     else:
         return redirect(url_for('login'))
 
@@ -140,9 +178,9 @@ def login_page():
 
 
 @my_app.route('/logout')
+@login_required
 def logout():
-    # remove the user from the session
-    session.pop('user', None)
+    logout_user()
     return redirect(url_for('login_page'))
 
 
