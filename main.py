@@ -39,8 +39,6 @@ class Student(db.Model, UserMixin):
     class_id = db.Column(Integer, ForeignKey('class.class_id'), nullable=False)
     class_ = relationship("Class", backref="students")
 
-    # is_student = db.Column(Boolean, nullable=False)
-
     def is_active(self):
         return True
 
@@ -59,8 +57,6 @@ class Admin(db.Model, UserMixin):
     admin_password = db.Column(String(255), nullable=False)
     admin_name = db.Column(String(255), nullable=False)
 
-    # is_admin = db.Column(Boolean, nullable=False)
-
     def is_active(self):
         return True
 
@@ -75,12 +71,15 @@ class Queue(db.Model, UserMixin):
     __tablename__ = 'queue'
 
     queue_id = db.Column(Integer, primary_key=True)
-    queue_status = db.Column(String(255), nullable=False)
 
     student_number = db.Column(String(10), ForeignKey('student.student_number'), nullable=False)
-    student = relationship("Student", backref="queues")
-
+    student_name = db.Column(String(255), ForeignKey('student.student_name'), nullable=False)
+    student_year = db.Column(String(255), ForeignKey('student.student_year'), nullable=False)
+    student_program = db.Column(String(255), ForeignKey('student.student_program'), nullable=False)
     admin_number = db.Column(String(10), ForeignKey('admin.admin_number'), nullable=False)
+    queue_status = db.Column(String(255), nullable=False)
+
+    student = relationship("Student", backref="queues")
     admin = relationship("Admin", backref="queues")
 
 
@@ -181,6 +180,7 @@ def login_page():
 @login_required
 def logout():
     logout_user()
+    flash('Logged out successfully', 'success')
     return redirect(url_for('login_page'))
 
 
@@ -204,7 +204,10 @@ def test():
     return jsonify(student_list)
 
 
+# def get_queue_list():
+
+
 if __name__ == "__main__":
     my_app.run(debug=True)
-    my_app.run()
+    my_app.run(threaded=True, processes=100)
     db.create_all()
