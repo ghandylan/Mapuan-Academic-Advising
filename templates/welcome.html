@@ -13,10 +13,8 @@
                 window.location.href = logoutUrl;
             }
         }
-
     </script>
 </head>
-
 <body>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
@@ -33,15 +31,12 @@
 {% endwith %}
 <div class="container">
     <header class="header">
-        {% if current_user.is_authenticated %}
-            {% if current_user.student_number %}
-                <h1>Welcome, {{ current_user.student_name }}!</h1>
-                {# FIXME: greeting for admin not showing #}
-            {% elif current_user.admin_number %}
-                <h1>Welcome, Admin!</h1>
-            {% endif %}
+        {% if current_user.student_number %}
+            <h1>Welcome, {{ username }}!</h1>
+            <p>You are logged in as a student.</p>
         {% else %}
-            <h1>Welcome to Our Website!</h1>
+            <h1>Welcome, {{ username }}!</h1>
+            <p>You are logged in as an admin.</p>
         {% endif %}
         <p>Mapuan Queueing System</p>
     </header>
@@ -56,60 +51,13 @@
                 <div class="column-header">Program</div>
                 <div class="column-header">Status</div>
             </div>
-            <div class="list-item">
-                <div class="column-value">John Doe</div>
-                <div class="column-value">3rd</div>
-                <div class="column-value">Computer Science</div>
-                <div class="column-value">Pending</div>
-            </div>
-            <div class="list-item">
-                <div class="column-value">Jane Smith</div>
-                <div class="column-value">2nd</div>
-                <div class="column-value">Engineering</div>
-                <div class="column-value">In Progress</div>
-            </div>
-            <div class="list-item">
-                <div class="column-value">Mike Johnson</div>
-                <div class="column-value">4th</div>
-                <div class="column-value">Business Administration</div>
-                <div class="column-value">Completed</div>
-            </div>
-            <div class="list-item">
-                <div class="column-value">Sarah Lee</div>
-                <div class="column-value">1st</div>
-                <div class="column-value">Psychology</div>
-                <div class="column-value">Pending</div>
-            </div>
-            <div class="list-item">
-                <div class="column-value">Tom Wilson</div>
-                <div class="column-value">2nd</div>
-                <div class="column-value">Marketing</div>
-                <div class="column-value">In Progress</div>
-            </div>
-            <div class="list-item">
-                <div class="column-value">Jane Smith</div>
-                <div class="column-value">2nd</div>
-                <div class="column-value">Engineering</div>
-                <div class="column-value">In Progress</div>
-            </div>
-            <div class="list-item">
-                <div class="column-value">Mike Johnson</div>
-                <div class="column-value">4th</div>
-                <div class="column-value">Business Administration</div>
-                <div class="column-value">Completed</div>
-            </div>
-            <div class="list-item">
-                <div class="column-value">Sarah Lee</div>
-                <div class="column-value">1st</div>
-                <div class="column-value">Psychology</div>
-                <div class="column-value">Pending</div>
-            </div>
-            <div class="list-item">
-                <div class="column-value">Tom Wilson</div>
-                <div class="column-value">2nd</div>
-                <div class="column-value">Marketing</div>
-                <div class="column-value">In Progress</div>
-            </div>
+{#            FIXME: SHOW QUEUE TABLE NOT WORKING #}
+{#            {% for row in queue %}#}
+{#                <div class="column-value">{{ queue.student_number }}</div>#}
+{#                <div class="column-value">{{ student.year }}</div>#}
+{#                <div class="column-value">{{ student.program }}</div>#}
+{#                <div class="column-value">{{ student.status }}</div>#}
+{#            {% endfor %}#}
         </div>
     </section>
 
