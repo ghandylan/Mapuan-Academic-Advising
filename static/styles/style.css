@@ -123,6 +123,19 @@ body {
     right: 0;
 }
 
+.error-alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: .25rem;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
 .success-alert {
     padding: 1rem;
     margin-bottom: 1rem;
@@ -136,18 +149,6 @@ body {
     right: 0;
 }
 
-.error-alert {
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: .25rem;
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-}
 
 .close-btn {
     position: absolute;
