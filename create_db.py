@@ -29,8 +29,6 @@ CREATE TABLE STUDENT
 
     class_ID INT NOT NULL, # Foreign key
 
-    isAdmin BOOLEAN NOT NULL,
-
     PRIMARY KEY (student_number)
 );
 
@@ -40,8 +38,6 @@ CREATE TABLE ADMIN
     admin_email varchar(255) NOT NULL,
     admin_password varchar(255) NOT NULL,
     admin_name varchar(255) NOT NULL,
-    
-    isAdmin BOOLEAN NOT NULL,
 
     PRIMARY KEY (admin_number)
 
@@ -53,11 +49,17 @@ CREATE TABLE QUEUE
     queue_ID INT NOT NULL AUTO_INCREMENT, # Primary key
 
     student_number varchar(10) NOT NULL, # Foreign key
+    student_name varchar(255) NOT NULL, # Foreign key
+    student_year varchar(255) NOT NULL, # Foreign key
+    student_program varchar(255) NOT NULL, # Foreign key
     admin_number varchar(10) NOT NULL, # Foreign key
     queue_status varchar(255) NOT NULL,
 
     PRIMARY KEY (queue_ID),
     FOREIGN KEY (student_number) REFERENCES STUDENT(student_number),
+    FOREIGN KEY (student_name) REFERENCES STUDENT(student_name),
+    FOREIGN KEY  (student_year) REFERENCES STUDENT(student_year),
+    FOREIGN KEY (student_program) REFERENCES STUDENT(student_program),
     FOREIGN KEY (admin_number) REFERENCES ADMIN(admin_number)
 );
 
