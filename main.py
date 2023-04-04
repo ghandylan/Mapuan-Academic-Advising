@@ -202,11 +202,11 @@ def logout():
 @my_app.route('/send_sms')
 def send_sms():
     # Replace with your Twilio account SID and auth token
-    account_sid = os.environ['TWILIO_ACCOUNT_SID']
-    auth_token = os.environ['TWILIO_AUTH_TOKEN']
+    account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
+    auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
 
     # Replace with your Twilio phone number and recipient phone number
-    from_phone_number = '+15854886256'
+    from_phone_number = os.environ.get('TWILIO_FROM_PHONE_NUMBER')
     to_phone_number = '+639616220682'
 
     # Create a Twilio client
