@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import *
@@ -200,8 +202,8 @@ def logout():
 @my_app.route('/send_sms')
 def send_sms():
     # Replace with your Twilio account SID and auth token
-    account_sid = 'AC63f05ab5b2848020c4cc50a103a01112'
-    auth_token = 'cbc2daa0204f4c6492f4ad99cdd3d7d2'
+    account_sid = os.environ['TWILIO_ACCOUNT_SID']
+    auth_token = os.environ['TWILIO_AUTH_TOKEN']
 
     # Replace with your Twilio phone number and recipient phone number
     from_phone_number = '+15854886256'
