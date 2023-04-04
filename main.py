@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import *
-from sqlalchemy.orm import relationship
 from flask_login import *
+from sqlalchemy.orm import *
 
 my_app = Flask(__name__, template_folder='templates', static_folder='static')
 my_app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/academic_advising'
@@ -25,8 +25,6 @@ def load_admin(admin_number):
 
 
 class Student(db.Model, UserMixin):
-    __tablename__ = 'student'
-
     student_number = db.Column(String(10), primary_key=True)
     student_email = db.Column(String(255), nullable=False)
     student_password = db.Column(String(255), nullable=False)
@@ -35,7 +33,6 @@ class Student(db.Model, UserMixin):
     student_program = db.Column(String(255), nullable=False)
     student_year = db.Column(String(255), nullable=False)
     student_concern = db.Column(String(255), nullable=False)
-
     class_id = db.Column(Integer, ForeignKey('class.class_id'), nullable=False)
     class_ = relationship("Class", backref="students")
 
@@ -50,8 +47,6 @@ class Student(db.Model, UserMixin):
 
 
 class Admin(db.Model, UserMixin):
-    __tablename__ = 'admin'
-
     admin_number = db.Column(String(10), primary_key=True)
     admin_email = db.Column(String(255), nullable=False)
     admin_password = db.Column(String(255), nullable=False)
@@ -67,53 +62,40 @@ class Admin(db.Model, UserMixin):
         return True
 
 
-class Queue(db.Model, UserMixin):
-    __tablename__ = 'queue'
-
-    queue_id = db.Column(Integer, primary_key=True)
-
-    student_number = db.Column(String(10), ForeignKey('student.student_number'), nullable=False)
-    student_name = db.Column(String(255), ForeignKey('student.student_name'), nullable=False)
-    student_year = db.Column(String(255), ForeignKey('student.student_year'), nullable=False)
-    student_program = db.Column(String(255), ForeignKey('student.student_program'), nullable=False)
-    admin_number = db.Column(String(10), ForeignKey('admin.admin_number'), nullable=False)
-    queue_status = db.Column(String(255), nullable=False)
-
-    student = relationship("Student", backref="queues")
-    admin = relationship("Admin", backref="queues")
+class Queue(db.Model):
+    queue_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    student_number = db.Column(db.String(10), db.ForeignKey('student.student_number'), nullable=False)
+    student_name = db.Column(db.String(255), db.ForeignKey('student.student_name'), nullable=False)
+    student_year = db.Column(db.String(255), db.ForeignKey('student.student_year'), nullable=False)
+    student_program = db.Column(db.String(255), db.ForeignKey('student.student_program'), nullable=False)
+    admin_number = db.Column(db.String(10), db.ForeignKey('admin.admin_number'), nullable=False)
+    queue_status = db.Column(db.String(255), nullable=False)
 
 
 class Feedback(db.Model, UserMixin):
-    __tablename__ = 'feedback'
-
-    feedback_id = db.Column(Integer, primary_key=True)
+    feedback_id = db.Column(Integer, primary_key=True, autoincrement=True)
     feedback = db.Column(String(255), nullable=False)
-
     student_number = db.Column(String(10), ForeignKey('student.student_number'), nullable=False)
     student = relationship("Student", backref="feedbacks")
-
     admin_number = db.Column(String(10), ForeignKey('admin.admin_number'), nullable=False)
     admin = relationship("Admin", backref="feedbacks")
 
 
 class Class(db.Model, UserMixin):
-    __tablename__ = 'class'
-
     class_id = db.Column(Integer, primary_key=True)
     class_name = db.Column(String(255), nullable=False)
     class_code = db.Column(String(255), nullable=False)
     teacher_name = db.Column(String(255), nullable=False)
-
     admin_number = db.Column(String(10), ForeignKey('admin.admin_number'), nullable=False)
     admin = relationship("Admin", backref="classes")
 
 
-@my_app.route('/')
+@my_app.route('/')  # HOME PAGE
 def index():
     return redirect(url_for('login'))
 
 
-@my_app.route('/login', methods=['GET', 'POST'])
+@my_app.route('/login', methods=['GET', 'POST'])  # LOGIN PAGE
 def login():
     if request.method == 'POST':
         # GET THE EMAIL AND PASSWORD ON THE FORM
@@ -141,13 +123,20 @@ def login():
     return render_template('index.html')
 
 
-@my_app.route('/student_dashboard')
+@my_app.route('/student_dashboard')  # STUDENT VIEW
 def student_dashboard():
     # check if user is logged in
     user_id = session.get('user_id')
     if user_id:
         user = Student.query.get(user_id)
+        # queue = Queue.query.filter_by(student_number=user_id).all()
+
+        # queue_std_name = Queue.query.filter_by(student_name=user_id).first()
+        # queue_std_year = Queue.query.filter_by(student_year=user_id).first()
+        # queue_std_program = Queue.query.filter_by(student_program=user_id).first()
+        # queue_status = Queue.query.filter_by(queue_status=user_id).first()
         print(user.student_name)
+        # print(queue)
         flash('Logged in successfully', 'success')
         return render_template('welcome.html', user=user, username=user.student_name)
     # if not logged in, redirect to login page
@@ -155,8 +144,7 @@ def student_dashboard():
         return redirect(url_for('login'))
 
 
-# FIXME: greeting message not showing
-@my_app.route('/admin_dashboard')
+@my_app.route('/admin_dashboard')  # ADMIN VIEW
 def admin_dashboard():
     # check if user is logged in
     user_id = session.get('admin_id')
@@ -167,6 +155,13 @@ def admin_dashboard():
         return render_template('welcome.html', user=user, username=user.admin_name)
     else:
         return redirect(url_for('login'))
+
+
+@my_app.route('/student_register', methods=['GET', 'POST'])  # STUDENT VIEW
+@login_required
+def student_register():
+
+    return render_template('advising.html')
 
 
 @my_app.route('/login_page')
@@ -202,9 +197,6 @@ def test():
         }
         student_list.append(student_dict)
     return jsonify(student_list)
-
-
-# def get_queue_list():
 
 
 if __name__ == "__main__":

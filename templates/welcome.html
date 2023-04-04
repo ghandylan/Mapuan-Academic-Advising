@@ -51,13 +51,13 @@
                 <div class="column-header">Program</div>
                 <div class="column-header">Status</div>
             </div>
-{#            FIXME: SHOW QUEUE TABLE NOT WORKING #}
-{#            {% for row in queue %}#}
-{#                <div class="column-value">{{ queue.student_number }}</div>#}
-{#                <div class="column-value">{{ student.year }}</div>#}
-{#                <div class="column-value">{{ student.program }}</div>#}
-{#                <div class="column-value">{{ student.status }}</div>#}
-{#            {% endfor %}#}
+            {# FIXME: SHOW QUEUE TABLE NOT WORKING #}
+            {% for row in queue %}
+                <div class="column-value"></div>
+                <div class="column-value"></div>
+                <div class="column-value"></div>
+                <div class="column-value"></div>
+            {% endfor %}
         </div>
     </section>
 
@@ -65,8 +65,7 @@
         <a href="#" onclick="logout()">
             <button class="button-out">Log Out</button>
         </a>
-        <a href="advising.html">
-            {#  FIXME: When Register button is pressed, app is saying that advising.html is no where to be found#}
+        <a href="{{ url_for('student_register') }}">
             <button class="button-register">Register</button>
         </a>
     </div>
