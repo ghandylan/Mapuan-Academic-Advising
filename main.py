@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import *
 from flask_login import *
 from sqlalchemy.orm import *
+from twilio.rest import Client
 
 my_app = Flask(__name__, template_folder='templates', static_folder='static')
 my_app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/academic_advising'
@@ -160,7 +161,24 @@ def admin_dashboard():
 @my_app.route('/student_register', methods=['GET', 'POST'])  # STUDENT VIEW
 @login_required
 def student_register():
+    if request.method == 'POST':
+        # GET THE EMAIL AND PASSWORD ON THE FORM
+        student_number = request.form.get('student_number')
+        student_name = request.form.get('student_name')
+        student_email = request.form.get('student_email')
+        student_password = request.form.get('student_password')
+        student_year = request.form.get('student_year')
+        student_program = request.form.get('student_program')
 
+        if student_number and student_name and student_email and student_password and student_year and student_program:
+            queue = Queue(student_number=student_number, student_name=student_name, student_email=student_email)
+            db.session.add(student)
+            db.session.commit()
+            flash('Student registered successfully', 'success')
+            return redirect(url_for('student_dashboard'))
+        else:
+            flash('All fields are required', 'error')
+            return redirect(url_for('student_register'))
     return render_template('advising.html')
 
 
@@ -177,6 +195,30 @@ def logout():
     logout_user()
     flash('Logged out successfully', 'success')
     return redirect(url_for('login_page'))
+
+
+@my_app.route('/send_sms')
+def send_sms():
+    # Replace with your Twilio account SID and auth token
+    account_sid = 'AC63f05ab5b2848020c4cc50a103a01112'
+    auth_token = 'cbc2daa0204f4c6492f4ad99cdd3d7d2'
+
+    # Replace with your Twilio phone number and recipient phone number
+    from_phone_number = '+15854886256'
+    to_phone_number = '+639616220682'
+
+    # Create a Twilio client
+    client = Client(account_sid, auth_token)
+
+    # Send the SMS message
+    message = client.messages.create(
+        body='Uy Dylan, this is a test message from the Mapua Academic Advising!',
+        from_=from_phone_number,
+        to=to_phone_number
+    )
+
+    # Return a response to the user
+    return f'SMS message sent to {to_phone_number}: {message.sid}'
 
 
 @my_app.route('/test', methods=['GET'])
