@@ -5,6 +5,15 @@
     <meta charset="UTF-8">
     <title>Registration Form</title>
     <link rel="stylesheet" type="text/css" href="../static/styles/advise.css">
+    <script>
+        const logoutUrl = "{{ url_for('logout') }}";
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = logoutUrl;
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -42,7 +51,7 @@
 
 
         <div class="button-container">
-            <a href="index.html" class="button">LogOut</a>
+            <a href="#" onclick="logout()" class="button">LogOut</a>
             <a href="zoom.html" class="button">Register</a>
         </div>
 
