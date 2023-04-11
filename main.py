@@ -35,7 +35,9 @@ class Student(db.Model, UserMixin):
     student_contact_no = db.Column(String(255), nullable=False)
     student_program = db.Column(String(255), nullable=False)
     student_year = db.Column(String(255), nullable=False)
-    student_concern = db.Column(String(255), nullable=False)
+    student_concern = db.Column(String(255))
+    student_additional_comment = db.Column(String(255))
+
     class_id = db.Column(Integer, ForeignKey('class.class_id'), nullable=False)
     class_ = relationship("Class", backref="students")
 
@@ -68,8 +70,10 @@ class Admin(db.Model, UserMixin):
 class Queue(db.Model):
     queue_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     student_number = db.Column(db.String(10), db.ForeignKey('student.student_number'), nullable=False)
-    admin_number = db.Column(db.String(10), db.ForeignKey('admin.admin_number'), nullable=False)
+    admin_number = db.Column(db.String(10), nullable=False)
     queue_status = db.Column(db.String(255), nullable=False)
+
+    student = relationship("Student", backref="queues")
 
 
 class Feedback(db.Model, UserMixin):
@@ -156,24 +160,28 @@ def admin_dashboard():
 @my_app.route('/student_register', methods=['GET', 'POST'])  # STUDENT VIEW
 @login_required
 def student_register():
-    if request.method == 'POST':
-        # GET THE EMAIL AND PASSWORD ON THE FORM
-        student_number = request.form.get('student_number')
-        student_name = request.form.get('student_name')
-        student_email = request.form.get('student_email')
-        student_password = request.form.get('student_password')
-        student_year = request.form.get('student_year')
-        student_program = request.form.get('student_program')
+    user_id = session.get('user_id')
+    if user_id:
+        user = Student.query.get(user_id)
+        if request.method == 'POST':
+            # get the data from dropdown(concern) and text area(comments)
+            concern = request.form.get('concerns')  # dropdown
+            concerns = request.form.get('concern')  # text area
 
-        # if student_number and student_name and student_email and student_password and student_year and student_program:
-        #     queue = Queue(student_number=student_number, student_name=student_name, student_email=student_email)
-        #     db.session.add(student)
-        #     db.session.commit()
-        #     flash('Student registered successfully', 'success')
-        #     return redirect(url_for('student_dashboard'))
-        # else:
-        #     flash('All fields are required', 'error')
-        #     return redirect(url_for('student_register'))
+            # update the student table with the new concern and comments
+            user.student_concern = concern
+            user.student_additional_comment = concerns
+
+            # push the new data to the database
+            db.session.commit()
+
+            # FIXME: ADD THE CURRENTLY LOGGED-IN USER/STUDENT TO THE QUEUE LIST/TABLE
+
+            # queue = Queue(student_number=user.student_number, admin_number='1234567890', queue_status='Waiting')
+            # db.session.add(queue)
+            return render_template('student/zoom.html', user=user)
+
+        return render_template('student/advising.html', user=user)
     return render_template('student/advising.html')
 
 
