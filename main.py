@@ -68,9 +68,6 @@ class Admin(db.Model, UserMixin):
 class Queue(db.Model):
     queue_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     student_number = db.Column(db.String(10), db.ForeignKey('student.student_number'), nullable=False)
-    student_name = db.Column(db.String(255), db.ForeignKey('student.student_name'), nullable=False)
-    student_year = db.Column(db.String(255), db.ForeignKey('student.student_year'), nullable=False)
-    student_program = db.Column(db.String(255), db.ForeignKey('student.student_program'), nullable=False)
     admin_number = db.Column(db.String(10), db.ForeignKey('admin.admin_number'), nullable=False)
     queue_status = db.Column(db.String(255), nullable=False)
 
@@ -123,7 +120,7 @@ def login():
             flash('Email and password are required', 'error')
             return redirect(url_for('login_page', error='Email and password are required'))
 
-    return render_template('index.html')
+    return render_template('login.html')
 
 
 @my_app.route('/student_dashboard')  # STUDENT VIEW
@@ -132,16 +129,12 @@ def student_dashboard():
     user_id = session.get('user_id')
     if user_id:
         user = Student.query.get(user_id)
-        # queue = Queue.query.filter_by(student_number=user_id).all()
 
-        # queue_std_name = Queue.query.filter_by(student_name=user_id).first()
-        # queue_std_year = Queue.query.filter_by(student_year=user_id).first()
-        # queue_std_program = Queue.query.filter_by(student_program=user_id).first()
-        # queue_status = Queue.query.filter_by(queue_status=user_id).first()
-        print(user.student_name)
-        # print(queue)
-        flash('Logged in successfully', 'success')
-        return render_template('welcome.html', user=user, username=user.student_name)
+        # Retrieve the queue entries with related student data
+        queue_entries = Queue.query.filter_by(student_number=user.student_number).all()
+
+        # Pass the user and queue entries to the template
+        return render_template('welcome.html', user=user, username=user.student_name, queue_entries=queue_entries)
     # if not logged in, redirect to login page
     else:
         return redirect(url_for('login'))
@@ -172,23 +165,23 @@ def student_register():
         student_year = request.form.get('student_year')
         student_program = request.form.get('student_program')
 
-        if student_number and student_name and student_email and student_password and student_year and student_program:
-            queue = Queue(student_number=student_number, student_name=student_name, student_email=student_email)
-            db.session.add(student)
-            db.session.commit()
-            flash('Student registered successfully', 'success')
-            return redirect(url_for('student_dashboard'))
-        else:
-            flash('All fields are required', 'error')
-            return redirect(url_for('student_register'))
-    return render_template('advising.html')
+        # if student_number and student_name and student_email and student_password and student_year and student_program:
+        #     queue = Queue(student_number=student_number, student_name=student_name, student_email=student_email)
+        #     db.session.add(student)
+        #     db.session.commit()
+        #     flash('Student registered successfully', 'success')
+        #     return redirect(url_for('student_dashboard'))
+        # else:
+        #     flash('All fields are required', 'error')
+        #     return redirect(url_for('student_register'))
+    return render_template('student/advising.html')
 
 
 @my_app.route('/login_page')
 def login_page():
     #     show error message if login failed
     error = request.args.get('error')
-    return render_template('index.html', error=error)
+    return render_template('login.html', error=error)
 
 
 @my_app.route('/logout')
