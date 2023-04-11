@@ -2,7 +2,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
+    font-family: Georgia, serif;
 }
 
 body {
@@ -23,14 +23,52 @@ body {
     padding: 20px;
 }
 
+body::after {
+	content: '';
+	display: block;
+	position: fixed;
+	width: 100%;
+	height: 20px;
+	background-color: #DA4242;
+  }
+
+  body::after {
+	bottom: 0;
+  }
+
 /* Header Styles */
 .header {
-    background-color: #DA4242;
-    text-align: center;
-    margin-bottom: 40px;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+	background-color: #DA4242;
+	padding: 20px;
+	text-align: center;
+	margin: 0;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+  }
+
+/* CSS styles for the logo */
+.header img {
+	width: 100%;
+	max-width: 150px;
+	height: auto;
+	position: absolute;
+	top: 5px;
+	left: 10%;
+	transform: translateX(-50%);
+	z-index: 1; /* Set a lower z-index value */
+  }
+
+.header::after {
+	content: '';
+	position: absolute;
+	bottom: 15px;
+	left: -0.1%; /* Adjust this value to move the line to the right or left */
+	width: 101%;
+	height: 15px;
+	background-color: #FFD700;
+	z-index: 0; /* Set a higher z-index value */
 }
 
 .header h1 {
@@ -42,6 +80,7 @@ body {
 .header p {
     font-size: 18px;
     color: #fff;
+    margin-bottom: 10px;
 }
 
 /* Queueing List Styles */
@@ -53,6 +92,7 @@ body {
     box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
     text-align: center;
     color: #333;
+    margin-top: 130px; /* Add this property to create space */
 }
 
 h2 {
@@ -67,9 +107,7 @@ h2 {
 
 .list {
     height: 300px;
-/* Set the height of the list */
     overflow-y: scroll;
-/* Add a scroll bar when the list is too long */
     padding: 1px;
 }
 
@@ -110,7 +148,6 @@ h2 {
     display: flex;
     justify-content: space-between;
 }
-
 .button-out {
     color: #000000;
     background-color: #FFD700;
@@ -127,6 +164,7 @@ h2 {
     background-color: #f7d563;
 }
 
+/* CSS for the Register button */
 .button-register {
     color: #000000;
     background-color: #FFD700;
@@ -141,4 +179,47 @@ h2 {
 
 .button-register:hover {
     background-color: #f7d563;
+}
+
+/* Media Query for smaller screens */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .header p {
+        font-size: 14px;
+    }
+
+    .header img {
+		max-width: 100px;
+		left: 13%;
+        z-index: -1;
+	}
+
+    .queueing-list {
+        padding: 30px;
+    }
+
+    .list-item {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .column-header, .column-value {
+        flex-basis: 50%;
+    }
+
+    #button-container {
+        flex-direction: column;
+    }
+
+    .button-out, .button-register {
+        padding: 10px 30px;
+        margin: 5px 0;
+    }
 }

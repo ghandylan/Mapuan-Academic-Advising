@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/styles/admin/editzoom.css">
+    <title>Edit Dashboard</title>
+</head>
+<body>
+    
+        <!-- Header -->
+    <div>
+        <header class="header">
+            <img src="/Img/mymapua.png" alt="Logo">
+            <h1>Welcome *admin name,*</h1>
+            <p>Mapua Academic Advising</p>
+        </header>
+    </div>
+
+    <!-- Section Headers -->
+
+    <div class="body-container">
+        <div class="wrapper">
+            <div class="box">
+                <h2>Current Advisors</h2>
+            </div>
+            <div class="box">
+                <h2>Zoom Link</h2>
+            </div>
+            <div class="box">
+                <h2>Status</h2>
+            </div>
+        </div>
+        <div class="tcontent">
+            <section class="livequeue">     
+                <div class="list">
+            <!-- new entry -->
+    
+                <div class="row">
+                <div class="column1">
+                    <div class="namecontainer">
+                        <p id="editNameAdvisor1">Dr. Albert Einstein</p>
+                    </div>
+                    <div class="editname">
+                        <button class="editnamebutton" onclick="enableEditingAdvisor1()"></button>
+                    </div>
+                </div>
+                <div class="column2">
+                    <p id="editZoom1"><a href="https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09">
+                        https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09</a></div>
+                    <button class="editlink" onclick="enableeditZoomLink1()"> </button>
+                    <script>
+                        function enableEditingAdvisor1() 
+                        {
+                        var editableText = document.getElementById("editNameAdvisor1");
+                        editableText.contentEditable = true;
+                        editableText.focus();
+                        }
+    
+                        function enableeditZoomLink1() 
+                        {
+                        var editableText = document.getElementById("editZoom1");
+                        editableText.contentEditable = true;
+                        editableText.focus();
+                        }
+                    </script>
+                    <div class="column3">
+                        <select>
+                            <option value="option">--Select Status--</option>
+                            <option value="option1"> Engaged </option>
+                            <option value="option2"> Available </option>
+                            <option value="option3"> On Break </option>
+                        </select>
+                    </div>
+                </div>
+    
+                <!-- new entry -->
+    
+                <div class="row">
+                <div class="column1">
+                    <div class="namecontainer">
+                        <p id="editNameAdvisor2">Dr. Anthony Davis</p>
+                    </div>
+                    <div class="editname">
+                        <button class="editnamebutton" onclick="enableEditingAdvisor2()"></button>
+                    </div>
+                </div>
+                <div class="column2">
+                    <p id="editZoom2"><a href="https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09">
+                        https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09</a></div>
+                    <button class="editlink" onclick="enableeditZoomLink2()"></button>
+    
+                    <script>
+                        function enableEditingAdvisor2() 
+                        {
+                        var editableText = document.getElementById("editNameAdvisor2");
+                        editableText.contentEditable = true;
+                        editableText.focus();
+                        }
+    
+                        function enableeditZoomLink2() 
+                        {
+                        var editableText = document.getElementById("editZoom2");
+                        editableText.contentEditable = true;
+                        editableText.focus();
+                        }
+                    </script>
+    
+                    <div class="column3">
+                        <select>
+                            <option value="option">--Select Status--</option>
+                            <option value="option1"> Engaged </option>
+                            <option value="option2"> Available </option>
+                            <option value="option3"> On Break </option>
+                        </select>
+                    </div>
+                </div>
+    
+                <!-- new entry -->
+    
+                <div class="row">
+                <div class="column1">
+                    <div class="namecontainer">
+                        <p id="editNameAdvisor3">Dr. Damian Lillard</p>
+                    </div>
+                    <div class="editname">
+                        <button class="editnamebutton" onclick="enableEditingAdvisor3()"></button>
+                    </div>
+                </div>
+                <div class="column2">
+                    <p id="editZoom3"><a href="https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09">
+                        https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09</a></div>
+                    <button class="editlink" onclick="enableeditZoomLink3()"></button>
+    
+                    <script>
+                        function enableEditingAdvisor3() 
+                        {
+                        var editableText = document.getElementById("editNameAdvisor3");
+                        editableText.contentEditable = true;
+                        editableText.focus();
+                        }
+    
+                        function enableeditZoomLink3() 
+                        {
+                        var editableText = document.getElementById("editZoom3");
+                        editableText.contentEditable = true;
+                        editableText.focus();
+                        }
+                    </script>
+    
+                    <div class="column3">
+                        <select>
+                            <option value="option">--Select Status--</option>
+                            <option value="option1"> Engaged </option>
+                            <option value="option2"> Available </option>
+                            <option value="option3"> On Break </option>
+                        </select>
+                    </div>
+                </div>
+    
+                <!-- new entry -->
+    
+                <div class="row">
+                <div class="column1">
+                    <div class="namecontainer">
+                        <p id="editNameAdvisor4">Dr. Kyle Lowry</p>
+                    </div>
+                    <div class="editname">
+                        <button class="editnamebutton" onclick="enableEditingAdvisor4()"></button>
+                    </div>
+                </div>
+                <div class="column2">
+                    <p id="editZoom4"><a href="https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09">
+                        https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09</a></div>
+                    <button class="editlink" onclick="enableeditZoomLink4()"></button>
+    
+                    <script>
+                        function enableEditingAdvisor4() 
+                        {
+                        var editableText = document.getElementById("editNameAdvisor4");
+                        editableText.contentEditable = true;
+                        editableText.focus();
+                        }
+    
+                        function enableeditZoomLink4() 
+                        {
+                        var editableText = document.getElementById("editZoom4");
+                        editableText.contentEditable = true;
+                        editableText.focus();
+                        }
+                    </script>
+    
+                    <div class="column3">
+                        <select>
+                            <option value="option">--Select Status--</option>
+                            <option value="option1"> Engaged </option>
+                            <option value="option2"> Available </option>
+                            <option value="option3"> On Break </option>
+                        </select>
+                    </div>
+                </div>
+    
+                <!-- new entry -->
+    
+                <div class="row">
+                    <div class="column1">
+                        <div class="namecontainer">
+                            <p id="editNameAdvisor5">Dr. Larry Bird</p>
+                        </div>
+                        <div class="editname">
+                            <button class="editnamebutton" onclick="enableEditingAdvisor5()"></button>
+                        </div>
+                    </div>
+                    <div class="column2">
+                        <p id="editZoom5"><a href="https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09">
+                            https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09</a></div>
+                        <button class="editlink" onclick="enableeditZoomLink5()"></button>
+        
+                        <script>
+                            function enableEditingAdvisor5() 
+                            {
+                            var editableText = document.getElementById("editNameAdvisor5");
+                            editableText.contentEditable = true;
+                            editableText.focus();
+                            }
+        
+                            function enableeditZoomLink5() 
+                            {
+                            var editableText = document.getElementById("editZoom5");
+                            editableText.contentEditable = true;
+                            editableText.focus();
+                            }
+                        </script>
+        
+                        <div class="column3">
+                            <select>
+                                <option value="option">--Select Status--</option>
+                                <option value="option1"> Engaged </option>
+                                <option value="option2"> Available </option>
+                                <option value="option3"> On Break </option>
+                            </select>
+                        </div>
+                    </div>
+    
+                <!-- new entry -->
+    
+                <div class="row">
+                    <div class="column1">
+                        <div class="namecontainer">
+                            <p id="editNameAdvisor6">Dr. Jimmy Kimmel</p>
+                        </div>
+                        <div class="editname">
+                            <button class="editnamebutton" onclick="enableEditingAdvisor6()"></button>
+                        </div>
+                    </div>
+                    <div class="column2">
+                        <p id="editZoom6"><a href="https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09">
+                            https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09</a></div>
+                        <button class="editlink" onclick="enableeditZoomLink6()"></button>
+        
+                        <script>
+                            function enableEditingAdvisor6() 
+                            {
+                            var editableText = document.getElementById("editNameAdvisor6");
+                            editableText.contentEditable = true;
+                            editableText.focus();
+                            }
+        
+                            function enableeditZoomLink6() 
+                            {
+                            var editableText = document.getElementById("editZoom6");
+                            editableText.contentEditable = true;
+                            editableText.focus();
+                            }
+                        </script>
+        
+                        <div class="column3">
+                            <select>
+                                <option value="option">--Select Status--</option>
+                                <option value="option1"> Engaged </option>
+                                <option value="option2"> Available </option>
+                                <option value="option3"> On Break </option>
+                            </select>
+                        </div>
+                    </div>
+    
+                <!-- new entry -->
+                
+                <div class="row">
+                    <div class="column1">
+                        <div class="namecontainer">
+                            <p id="editNameAdvisor7">Dr. Dwayne Wade</p>
+                        </div>
+                        <div class="editname">
+                            <button class="editnamebutton" onclick="enableEditingAdvisor7()"></button>
+                        </div>
+                    </div>
+                    <div class="column2">
+                        <p id="editZoom7"><a href="https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09">
+                            https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09</a></div>
+                        <button class="editlink" onclick="enableeditZoomLink7()"></button>
+        
+                        <script>
+                            function enableEditingAdvisor7() 
+                            {
+                            var editableText = document.getElementById("editNameAdvisor7");
+                            editableText.contentEditable = true;
+                            editableText.focus();
+                            }
+        
+                            function enableeditZoomLink7() 
+                            {
+                            var editableText = document.getElementById("editZoom7");
+                            editableText.contentEditable = true;
+                            editableText.focus();
+                            }
+                        </script>
+        
+                        <div class="column3">
+                            <select>
+                                <option value="option">--Select Status--</option>
+                                <option value="option1"> Engaged </option>
+                                <option value="option2"> Available </option>
+                                <option value="option3"> On Break </option>
+                            </select>
+                        </div>
+                    </div>
+    
+                <!-- new entry -->
+    
+                <div class="row">
+                    <div class="column1">
+                        <div class="namecontainer">
+                            <p id="editNameAdvisor8">Dr. Paul Watson</p>
+                        </div>
+                        <div class="editname">
+                            <button class="editnamebutton" onclick="enableEditingAdvisor8()"></button>
+                        </div>
+                    </div>
+                    <div class="column2">
+                        <p id="editZoom8"><a href="https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09">
+                            https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09</a></div>
+                        <button class="editlink" onclick="enableeditZoomLink8()"></button>
+        
+                        <script>
+                            function enableEditingAdvisor8() 
+                            {
+                            var editableText = document.getElementById("editNameAdvisor8");
+                            editableText.contentEditable = true;
+                            editableText.focus();
+                            }
+        
+                            function enableeditZoomLink8() 
+                            {
+                            var editableText = document.getElementById("editZoom8");
+                            editableText.contentEditable = true;
+                            editableText.focus();
+                            }
+                        </script>
+        
+                        <div class="column3">
+                            <select>
+                                <option value="option">--Select Status--</option>
+                                <option value="option1"> Engaged </option>
+                                <option value="option2"> Available </option>
+                                <option value="option3"> On Break </option>
+                            </select>
+                        </div>
+                    </div>
+    
+                </div>
+            </section>
+        </div>
+
+        <div id="button-container">
+            <button class="button-feedback" onclick="document.location='advising.html'">Feedback</button>
+            <button class="button-register" onclick="document.location='Livelist-admin.html'">Queueing list</button>
+            <button class="button-out" onclick="document.location='index.html'">Log Out</button>
+        </div>
+    </div>
+
+</body>
+</html>

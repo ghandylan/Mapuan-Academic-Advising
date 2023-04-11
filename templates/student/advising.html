@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Registration Form</title>
+    <link rel="stylesheet" type="text/css" href="../../static/styles/student/advise.css">
+
+    <script>
+        const logoutUrl = "{{ url_for('logout') }}";
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = logoutUrl;
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+<header>
+    <h1>Academic Advising Registration Form</h1>
+</header>
+
+<div class="container">
+    <div class="image">
+        <img src="../../static/img/mymapua.png" alt="My Image" style="max-width: 150px;">
+    </div>
+
+    <form action="zoom.html" method="post" required>
+        <div class="left">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Dela Cruz, Juan A." required>
+            <br>
+
+            <label for="student-id">Student ID:</label>
+            <input type="text" id="student-id" name="student-id" placeholder="2020123456" required>
+            <br>
+
+            <label for="program">Program:</label>
+            <input type="text" id="program" name="program" placeholder="Information Technology" required>
+            <br>
+
+            <label for="year">Year:</label>
+            <input type="text" id="year" name="year" placeholder="1st" required>
+            <br>
+
+        </div>
+
+        <div class="right">
+            <label for="concerns">Select a concern: </label>
+            <select name="concerns" id="concerns">
+                <option value="" disabled selected>---Choose your area of concern---</option>
+                <option value="general">Billing and payments</option>
+                <option value="support">Scheduling concern</option>
+                <option value="billing">Section change</option>
+                <option value="feedback">Graduate requirements</option>
+            </select>
+            <label for="concern">Additional Comments:</label>
+            <textarea id="concern" name="concern" placeholder="Feedback and suggestions." required></textarea>
+            <br>
+            <br>
+
+            <div class="button-container">
+                <input type="reset" class="button" value="Clear All">
+                <button type="submit" class="button">Register</button>
+            </div>
+
+            <input type="Logout" value="Log Out" onclick="logout()" readonly>
+        </div>
+    </form>
+
+</div>
+
+</body>
+
+</html>

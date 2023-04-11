@@ -1,9 +1,8 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    overflow-x: hidden;
-    position: relative;
+    font-family: Georgia, serif;
+    overflow: hidden; /* Hide scrollbars */
 }
 
 .container {
@@ -16,22 +15,28 @@ body {
 }
 
 .logo {
+    position: absolute;
+    top: 5px;
+    left: -100px;
+}
+
+.logo img {
+    width: 130%;
+    height: 130%;
+}
+
+.logo {
     flex-basis: 60%;
     background-color: #ffffff00;
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
-}
-
-.logo img {
-    width: 100%;
-    height: 100%;
+    justify-content: center; /* center horizontally and vertically */
 }
 
 .head {
     background-color: #ffffff00;
-    height: 800px;
+    height: 900px;
     position: 100;
     top: 5px;
     left: 100px;
@@ -40,10 +45,9 @@ body {
 }
 
 .head img {
-    height: 110px;
+    height: 100px;
     margin: 15px;
 }
-
 
 .login-form {
     flex-basis: 50%;
@@ -62,7 +66,7 @@ body {
     background-color: #fff;
     padding: 60px;
     border-radius: 33px;
-    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+    box-shadow: 0px 4px 10px rgba(255, 255, 255, 0.1);
     width: 400px;
     height: 400px;
     box-sizing: border-box;
@@ -86,7 +90,8 @@ body {
     border: none;
     border-radius: 14px;
     cursor: pointer;
-    font-size: 16px;
+    font-family: Georgia, serif;
+    font-size: 1rem;
     font-weight: bold;
     transition: background-color 0.3s ease;
     box-sizing: border-box;
@@ -94,10 +99,9 @@ body {
 
 .login-form input[type="submit"]:hover {
     background-color: #8a8484;
-    /*     make a background for this btn*/
-    color: #4CAF50;
 }
 
+/* CSS for the Forgot Password */
 .forgot-password {
     margin-top: 10px;
     font-size: 14px;
@@ -105,6 +109,60 @@ body {
     text-align: center;
     text-decoration: underline;
     cursor: pointer;
+}
+
+
+/* Media queries for smaller screens */
+@media only screen and (max-width: 600px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .logo {
+        padding: 140px;
+        margin: auto;
+        text-align: center;
+        display: inline-block;
+        width: 100%;
+        max-width: 500px;
+    }
+
+    .logo img {
+        width: 100%;
+        height: auto;
+    }
+
+    .head {
+        height: 500px;
+        width: 100%;
+    }
+
+    .login-form {
+        flex-basis: 70%;
+    }
+
+    .login-form form {
+        width: 100%;
+        height: auto;
+        padding: 55px;
+    }
+
+    .login-form input[type="text"],
+    .login-form input[type="password"] {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+
+    .login-form input[type="submit"] {
+        padding: 16px 50px;
+    }
+}
+
+/* Media queries for even smaller screens */
+@media only screen and (max-width: 480px) {
+    .logo {
+        max-width: 300px;
+    }
 }
 
 
