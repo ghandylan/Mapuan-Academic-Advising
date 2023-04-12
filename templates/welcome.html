@@ -11,6 +11,8 @@
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 window.location.href = logoutUrl;
+            } else {
+                return false;
             }
         }
     </script>
@@ -51,15 +53,16 @@
                 <div class="column-header">Program</div>
                 <div class="column-header">Status</div>
             </div>
-            {% for entry in queue_entries %}
+            {% for row in result %}
                 <div class="list-item">
-                    <div class="column-value">{{ entry.student.student_name }}</div>
-                    <div class="column-value">{{ entry.student.year }}</div>
-                    <div class="column-value">{{ entry.student.program }}</div>
-                    <div class="column-value">{{ entry.queue_status }}</div>
+                    <div class="column-value">{{ row.student_name }}</div> <!-- Update to display student name -->
+                    <div class="column-value">{{ row.student_year }}</div>
+                    <div class="column-value">{{ row.student_program }}</div>
+                    <div class="column-value">{{ row.queue_status }}</div>
                 </div>
             {% endfor %}
         </div>
+
     </section>
 
     <div id="button-container">
