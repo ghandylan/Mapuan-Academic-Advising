@@ -56,6 +56,7 @@ class Admin(db.Model, UserMixin):
     admin_email = db.Column(String(255), nullable=False)
     admin_password = db.Column(String(255), nullable=False)
     admin_name = db.Column(String(255), nullable=False)
+    available = db.Column(Boolean, nullable=False, default=True)
 
     def is_active(self):
         return True
@@ -70,10 +71,12 @@ class Admin(db.Model, UserMixin):
 class Queue(db.Model):
     queue_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     student_number = db.Column(db.String(10), db.ForeignKey('student.student_number'), nullable=False)
-    admin_number = db.Column(db.String(10), nullable=False)
+    admin_number = db.Column(db.String(10), db.ForeignKey('admin.admin_number'), nullable=False)
     queue_status = db.Column(db.String(255), nullable=False)
+    zoom_link = db.Column(db.String(255))
 
     student = relationship("Student", backref="queues")
+    admin = relationship("Admin", backref="queues")
 
 
 class Feedback(db.Model, UserMixin):
@@ -134,11 +137,13 @@ def student_dashboard():
     if user_id:
         user = Student.query.get(user_id)
 
-        # Retrieve the queue entries with related student data
-        queue_entries = Queue.query.filter_by(student_number=user.student_number).all()
+        result = db.session.query(Queue.queue_ID, Student.student_number, Student.student_name, Student.student_program,
+                                  Student.student_year, Queue.queue_status) \
+            .join(Student, Queue.student_number == Student.student_number) \
+            .all()
 
         # Pass the user and queue entries to the template
-        return render_template('welcome.html', user=user, username=user.student_name, queue_entries=queue_entries)
+        return render_template('welcome.html', user=user, username=user.student_name, result=result)
     # if not logged in, redirect to login page
     else:
         return redirect(url_for('login'))
@@ -146,6 +151,7 @@ def student_dashboard():
 
 @my_app.route('/admin_dashboard')  # ADMIN VIEW
 def admin_dashboard():
+    # TODO: continue working on admin side, GOOD LUCK!
     # check if user is logged in
     user_id = session.get('admin_id')
     if user_id:
@@ -175,11 +181,34 @@ def student_register():
             # push the new data to the database
             db.session.commit()
 
-            # FIXME: ADD THE CURRENTLY LOGGED-IN USER/STUDENT TO THE QUEUE LIST/TABLE
+            # loop through the admin rows and find the first available admin then assign its primary key to the queue
+            admin = Admin.query.filter_by(available=1).first()
+            if admin:
+                # update the admin table to set the admin to unavailable
+                admin.available = 0
+                db.session.commit()
 
-            # queue = Queue(student_number=user.student_number, admin_number='1234567890', queue_status='Waiting')
-            # db.session.add(queue)
-            return render_template('student/zoom.html', user=user)
+            queue = Queue()
+
+            queue.student_number = user.student_number
+            queue.admin_number = admin.admin_number
+            queue.queue_status = 'Waiting'
+            queue.zoom_link = 'https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09'
+
+            db.session.add(queue)
+            db.session.commit()
+
+            # count the number of entries in the queue
+            total_queue_entries = Queue.query.count()
+            adviser_in_charge = admin.admin_name
+            zoom_link = queue.zoom_link
+
+            # FIXME: make SMS more personalized, refer to send_sms function
+            formatted_number = '+' + user.student_contact_no
+            send_sms(formatted_number)
+
+            return render_template('student/zoom.html', user=user, total_queue_entries=total_queue_entries,
+                                   adviser_in_charge=adviser_in_charge, zoom_link=zoom_link, username=user.student_name)
 
         return render_template('student/advising.html', user=user)
     return render_template('student/advising.html')
@@ -195,27 +224,40 @@ def login_page():
 @my_app.route('/logout')
 @login_required
 def logout():
-    logout_user()
+    #  remove user from QUEUE table and make the admin available
+    user_id = session.get('user_id')
+    # if queue table is empty, do not delete the row
+    if Queue.query.count() == 0:
+        logout_user()
+    else:
+        if user_id:
+            user = Student.query.get(user_id)
+            queue = Queue.query.filter_by(student_number=user.student_number).first()
+            admin = Admin.query.get(queue.admin_number)
+            admin.available = 1
+            db.session.delete(queue)
+            db.session.commit()
+            logout_user()
     flash('Logged out successfully', 'success')
     return redirect(url_for('login_page'))
 
 
-@my_app.route('/send_sms')
-def send_sms():
+def send_sms(to_phone_number):
     # Replace with your Twilio account SID and auth token
     account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
     auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
 
     # Replace with your Twilio phone number and recipient phone number
     from_phone_number = os.environ.get('TWILIO_FROM_PHONE_NUMBER')
-    to_phone_number = '+639616220682'
+    # to_phone_number = '+639616220682'
 
     # Create a Twilio client
     client = Client(account_sid, auth_token)
 
+    # FIXME: make SMS more personalized
     # Send the SMS message
     message = client.messages.create(
-        body='Uy Dylan, this is a test message from the Mapua Academic Advising!',
+        body='Uy pare, this is a test message from the Mapua Academic Advising!',
         from_=from_phone_number,
         to=to_phone_number
     )
