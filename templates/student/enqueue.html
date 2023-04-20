@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/styles/student/enqueue.css">
+    <title>Admin List</title>
+    <script>
+        const logoutUrl = "{{ url_for('logout') }}";
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = logoutUrl;
+            }
+        }
+
+        function validateForm() {
+            const radios = document.getElementsByName('admin_id');
+            let checked = false;
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    checked = true;
+                    break;
+                }
+            }
+            if (!checked) {
+                alert('Please select an admin.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</head>
+
+<body>
+<div class="headergap">
+    <header class="header">
+        <img src="../../static/img/mymapua.png" alt="My Image" style="max-width: 150px;">
+        <h1>Welcome {{ username }}</h1>
+        <p>Mapua Academic Advising</p>
+    </header>
+</div>
+
+<h1>Admin List</h1>
+<form action="/student_dashboard" method="post" onsubmit="return validateForm();">
+    <!-- Replace with appropriate form action URL -->
+    <table>
+        <thead>
+        <tr>
+            <th>Admin ID</th>
+            <th>Admin Name</th>
+            <th>Queue Count</th>
+            <th>Select</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for admin in admins %}
+            <tr>
+                <td>{{ admin.admin_id }}</td>
+                <td>{{ admin.admin_name }}</td>
+                <td>{{ admin.queue_count }}</td> <!-- Replace with appropriate attribute for queue count -->
+                <td><input type="radio" name="admin_id" value="{{ admin.admin_id }}"></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="button-container">
+        <a href="#" onclick="logout()">
+            <button class="logout"">Log Out</button>
+        </a>
+        <input type="submit" value="Enqueue">
+    </div>
+</form>
+</body>
+
+</html>

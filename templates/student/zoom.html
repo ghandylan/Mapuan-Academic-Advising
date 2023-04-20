@@ -16,7 +16,45 @@
                 return false;
 
         }
+
+        setInterval(function () {
+            $.ajax({
+                url: '{{ url_for("student_register") }}',
+                type: 'GET',
+                success: function (data) {
+                    var queue_count = data.queue_count;
+                    var queue_order = data.queue_order;
+                    var adviser_in_charge = data.adviser_in_charge;
+                    var queue_status = data.queue_status;
+
+                    // Update the content of the page with the new data
+                    $('#queue-count').text(queue_count);
+                    $('#queue-order').text(queue_order);
+                    $('.adviser-in-charge').text(adviser_in_charge);
+
+                }
+            });
+        }, 500); // send request every 0.5 seconds
+
+        // function that checks the queue status every 5 seconds
+        function checkQueueStatus() {
+            // make a GET request to the server to get the current queue status
+            fetch('/get_queue_status')
+                .then(response => response.json())
+                .then(data => {
+                    // check if the queue status has changed to "Fulfilled"
+                    if (data.queue_status === 'Fulfilled') {
+                        // redirect to the feedback page
+                        window.location.href = '/feedback';
+                    }
+                })
+                .catch(error => console.error(error));
+        }
+
+        // call the checkQueueStatus function every 5 seconds
+        setInterval(checkQueueStatus, 500);
     </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -37,7 +75,7 @@
     <div class="grid-containertable">
         <div class="grid-item-table">
             <h2>Total in Queue</h2>
-            <p class="table-data">{{ total_queue_entries }}</p>
+            <p id="queue-count" class="table-data"></p>
         </div>
 
         <div class="grid-item-table">
@@ -46,17 +84,17 @@
         </div>
 
         <div class="grid-item-table ">
-            <h2>Queue Code</h2>
-            <p class="table-data">MU0016</p>
+            <h2>Position in Queue</h2>
+            <p id="queue-order" class="table-data"></p>
         </div>
     </div>
+
 
     <div class="grid-container2">
         <div class="grid-item"><a href="https://zoom.us/j/94678770175?pwd=Qm5wMG5XMHAwL3NudC9yb3E4R0xUZz09"
                                   class="button">Zoom Link:</a></div>
-        <div class="grid-item"><p class="link"><b>Click here:</b> <a
-                href="{{ zoom_link }}">
-            {{ zoom_link }}</a></p></div>
+        <div class="grid-item"><p class="link"><b>Click here:</b> <a href="{{ zoom_link }}">{{ zoom_link }}</a></p>
+        </div>
         <div class="grid-item"><a href="#" onclick="logout()" class="button">Log Out</a></div>
     </div>
 </div>

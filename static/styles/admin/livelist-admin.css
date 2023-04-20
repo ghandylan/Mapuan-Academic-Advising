@@ -25,7 +25,7 @@ body::after {
 	height: 20px;
 	background-color: #DA4242;
 }
-  
+
 body::after {
 	bottom: 0;
 }
@@ -54,7 +54,7 @@ body::after {
 	left: 5%;
 	transform: translateX(-50%);
 	z-index: 1; /* Set a lower z-index value */
-}  
+}
 
 .header::after {
 	content: '';
@@ -85,9 +85,6 @@ body::after {
 
 
 
-  
-  
-  
 
 
 
@@ -120,7 +117,10 @@ body::after {
 
 
 
-  
+
+
+
+
 section{
     margin-left: 1;
     align-items: center;
@@ -165,8 +165,9 @@ section{
     text-align: center;
     display: flex;
     flex-direction: column;
+
 }
-  
+
 .row {
     display: flex;
     flex-direction: row;
@@ -175,7 +176,16 @@ section{
     padding: 15px;
     border-bottom: 2px solid #ccc;
 }
-  
+/* Grey out rows after the first two rows */
+.list .row:not(:first-child):not(:nth-child(2)) {
+    opacity: 0.5;
+}
+
+/* Set pointer events to none for greyed out rows */
+.list .row:not(:first-child):not(:nth-child(2)) * {
+    pointer-events: none;
+}
+
 .column {
     font-size: 18px;
     flex: 1;
@@ -238,4 +248,17 @@ select {
 
 .button-register:hover {
     background-color: #f7d563;
+}
+
+.check-button, .x-button {
+    background-color: transparent;
+    color: black;
+    border: none;
+    padding: 0;
+    margin-right: 10px;
+}
+
+.check-button:hover, .x-button:hover {
+    cursor: pointer;
+    color: green;
 }

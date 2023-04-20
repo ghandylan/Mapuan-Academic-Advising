@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Queueing List</title>
-    <link rel="stylesheet" type="text/css" href="../static/styles/student/welcome.css">
+    <link rel="stylesheet" type="text/css" href="../../static/styles/student/welcome.css">
     <script>
         const logoutUrl = "{{ url_for('logout') }}";
 
@@ -33,7 +33,7 @@
 {% endwith %}
 <div class="container">
     <header class="header">
-        <img src="../static/img/mymapua.png" alt="Logo">
+        <img src="../../static/img/mymapua.png" alt="Logo">
         {% if current_user.student_number %}
             <h1>Welcome, {{ username }}!</h1>
             <p>You are logged in as a student.</p>

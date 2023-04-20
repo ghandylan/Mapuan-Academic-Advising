@@ -1,43 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="UTF-8">
-	<title>Feedback Form</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="../../static/styles/student/feedback.css">
+    <meta charset="UTF-8">
+    <title>Feedback Form</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../../static/styles/student/feedback.css">
+    <script>
+        function validateForm() {
+            const ratingInputs = document.getElementsByName("rating");
+            let ratingSelected = false;
+            for (let i = 0; i < ratingInputs.length; i++) {
+                if (ratingInputs[i].checked) {
+                    ratingSelected = true;
+                    break;
+                }
+            }
+
+            if (!ratingSelected) {
+                alert("Please select a rating.");
+                return false;
+            }
+
+            const commentsInput = document.getElementById("comments");
+            if (!commentsInput.value) {
+                alert("Please provide comments.");
+                return false;
+            }
+
+            else {
+                alert("Thank you for your feedback!");
+                leavePage();
+            }
+
+            return true;
+        }
+
+
+        const logoutUrl = "{{ url_for('logout') }}";
+
+        function leavePage() {
+            if (confirm("Do you want to leave this page?")) {
+                window.location.href = logoutUrl;
+            }
+        }
+    </script>
 </head>
 <body>
 
-	<div class="container">
+<div class="container">
 
-		<div class="header">
-			<img src="../../static/img/mymapua.png" alt="Logo">
-			<h1>Feedback Form</h1>
-			<p>Let us know how we're doing!</p>
-		</div>
-		
-		<div class="feedback-form">
-			<form>
-				<label for="rating">How was your experience?</label>
-				<div class="smiley-container">
-					<input type="radio" name="rating" value="excellent" id="excellent">
-					<label class="smiley" for="excellent">&#128522;</label>
-					<input type="radio" name="rating" value="good" id="good">
-					<label class="smiley" for="good">&#128516;</label>
-					<input type="radio" name="rating" value="ok" id="ok">
-					<label class="smiley" for="ok">&#128528;</label>
-					<input type="radio" name="rating" value="poor" id="poor">
-					<label class="smiley" for="poor">&#128542;</label>
-					<input type="radio" name="rating" value="terrible" id="terrible">
-					<label class="smiley" for="terrible">&#128549;</label>
-				</div>
-				<label for="comments">Comments:</label>
-				<textarea name="comments" id="comments" rows="5"></textarea>
-				<button type="submit">Submit</button>
-			</form>
-		</div>
+    <div class="header">
+        <img src="../../static/img/mymapua.png" alt="Logo">
+        <h1>Feedback Form</h1>
+        <p>Let us know how we're doing!</p>
+    </div>
 
-	</div>
+    <div class="feedback-form">
+        <form action="{{ url_for("feedback") }}" method="POST" onsubmit="return validateForm()">
+            <label for="rating">How was your experience?</label>
+            <div class="smiley-container">
+                <input type="radio" name="rating" value="excellent" id="excellent">
+                <label class="smiley" for="excellent">&#128522;</label>
+                <input type="radio" name="rating" value="good" id="good">
+                <label class="smiley" for="good">&#128516;</label>
+                <input type="radio" name="rating" value="ok" id="ok">
+                <label class="smiley" for="ok">&#128528;</label>
+                <input type="radio" name="rating" value="poor" id="poor">
+                <label class="smiley" for="poor">&#128542;</label>
+                <input type="radio" name="rating" value="terrible" id="terrible">
+                <label class="smiley" for="terrible">&#128549;</label>
+            </div>
+            <label for="comments">Comments:</label>
+            <textarea name="comments" id="comments" rows="5"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+</div>
 
 </body>
 </html>

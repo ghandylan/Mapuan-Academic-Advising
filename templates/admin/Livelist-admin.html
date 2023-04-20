@@ -5,141 +5,124 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../static/styles/admin/livelist-admin.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="...">
     <title>Admin Current Queue list</title>
+    <script src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.3.2/socket.io.min.js"></script>
+    <script>
+        // Add event listener to the window object to listen for DOMContentLoaded event
+        window.addEventListener('DOMContentLoaded', function () {
+            // Get all rows in the list
+            const rows = document.querySelectorAll('.list .row');
+
+            // Loop through each row, starting from the second row (index 1)
+            for (let i = 2; i < rows.length; i++) {
+                // Add a class to apply greyed out style
+                rows[i].classList.add('greyed-out');
+            }
+        });
+
+        setInterval(function () {
+            $.ajax({
+                url: '{{ url_for("admin_dashboard") }}',
+                type: 'GET',
+                success: function (data) {
+                    // Update the content of the page with the new data returned by the server
+                    $('.livequeue').html($(data).find('.livequeue').html());
+                }
+            });
+        }, 5000); // Send requests every 5 seconds
+
+        const logoutUrl = "{{ url_for('logout') }}";
+
+        function logout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = logoutUrl;
+            } else {
+                return false;
+            }
+        }
+    </script>
 </head>
 
 <body>
-    <div class="body-container">
-        <header class="header">
-            <img src="/Img/mymapua.png" alt="Logo">
-            <h1>Welcome *admin name,*</h1>
-            <p>Mapua Academic Advising</p>
-        </header>
-        <div>
-            <div class="queuehead">
-                <h2 class="queueheader">Live Queue</h2>
-            </div>
+<div class="body-container">
+    <header class="header">
+        <img src="../../static/img/mymapua.png" alt="Logo">
+        {% if user.admin_number %}
+            <h1>Welcome, {{ username }}!</h1>
+            <p>You are logged in as an admin.</p>
+        {% endif %}
+        <p>Mapua Academic Advising</p>
+    </header>
+    <div>
+        <div class="queuehead">
+            <h2 class="queueheader">Live Queue</h2>
+        </div>
         <div class="tcontainer">
-            <section class="livequeue">     
+            <section class="livequeue">
                 <div class="list">
                     <div class="row">
                         <div class="column-header"><b>Name</b></div>
                         <div class="column-header"><b>Year and Program</b></div>
                         <div class="column-header"><b>Status</b></div>
+                        <div class="column-header"><b></b></div>
                     </div>
 
-                <div class="row">
-                <div class="column">Timmy Turner</div>
-                <div class="column">2nd Year - BSIT</div>
-                <div class="column">
-                        <select>
-                            <option value="option">--Select Status--</option>
-                            <option value="option1"> In Meet </option>
-                            <option value="option2"> Waiting </option>
-                            <option value="option3"> Fulfilled </option>
-                        </select>
-                    </div>
-                </div>
+                    {% for student in students %}
+                        {% if student.queue_status != 'Fulfilled' %}
+                            <div class="row">
+                                <div class="column">{{ student.student_name }}</div>
+                                <div class="column">{{ student.student_year }} - {{ student.student_program }}</div>
+                                <div class="column">
+                                    <label>
+                                        <select id="queueStatusSelect">
+                                            <option value="option">--Select Status--</option>
+                                            <option value="option1"
+                                                    {% if student.queue_status == 'In Meet' %}selected{% endif %}>In
+                                                Meet
+                                            </option>
+                                            <option value="option2"
+                                                    {% if student.queue_status == 'Waiting' %}selected{% endif %}>
+                                                Waiting
+                                            </option>
+                                            <option value="option3"
+                                                    {% if student.queue_status == 'Fulfilled' %}selected{% endif %}>
+                                                Fulfilled
+                                            </option>
+                                        </select>
+                                    </label>
+                                </div>
+                                <form method="POST" action="{{ url_for('admin_dashboard') }}">
+                                    <input type="hidden" name="student_number" value="{{ student.student_number }}">
+                                    <input type="hidden" name="action" value="check">
+                                    <button type="submit" class="check-button">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
 
-                <div class="row">
-                <div class="column">Kobe Bryant</div>
-                <div class="column">1st Year - BSCS</div>
-                    <div class="column">
-                        <select>
-                            <option value="option">--Select Status--</option>
-                            <option value="option1"> In Meet </option>
-                            <option value="option2"> Waiting </option>
-                            <option value="option3"> Fulfilled </option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row">
-                <div class="column">Steph Curry</div>
-                <div class="column">3rd Year - BSIT</div>
-                    <div class="column">
-                        <select>
-                            <option value="option">--Select Status--</option>
-                            <option value="option1"> In Meet </option>
-                            <option value="option2"> Waiting </option>
-                            <option value="option3"> Fulfilled </option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row">
-                <div class="column">Steph Curry</div>
-                <div class="column">3rd Year - BSIT</div>
-                    <div class="column">
-                        <select>
-                            <option value="option">--Select Status--</option>
-                            <option value="option1"> In Meet </option>
-                            <option value="option2"> Waiting </option>
-                            <option value="option3"> Fulfilled </option>
-                        </select>
-                      </div>
-                    </div>
-
-                <div class="row">
-                <div class="column">Steph Curry</div>
-                <div class="column">3rd Year - BSIT</div>
-                    <div class="column">
-                        <select>
-                            <option value="option">--Select Status--</option>
-                            <option value="option1"> In Meet </option>
-                            <option value="option2"> Waiting </option>
-                            <option value="option3"> Fulfilled </option>
-                        </select>
-                      </div>
-                    </div>
-                
-                <div class="row">
-                <div class="column">Steph Curry</div>
-                <div class="column">3rd Year - BSIT</div>
-                    <div class="column">
-                        <select>
-                            <option value="option">--Select Status--</option>
-                            <option value="option1"> In Meet </option>
-                            <option value="option2"> Waiting </option>
-                            <option value="option3"> Fulfilled </option>
-                        </select>
-                      </div>
-                    </div>
-                
-                <div class="row">
-                <div class="column">Steph Curry</div>
-                <div class="column">3rd Year - BSIT</div>
-                    <div class="column">
-                        <select>
-                            <option value="option">--Select Status--</option>
-                            <option value="option1"> In Meet </option>
-                            <option value="option2"> Waiting </option>
-                            <option value="option3"> Fulfilled </option>
-                        </select>
-                      </div>
-                    </div>
-
-                <div class="row">
-                <div class="column">Steph Curry</div>
-                <div class="column">3rd Year - BSIT</div>
-                    <div class="column">
-                        <select>
-                            <option value="option">--Select Status--</option>
-                            <option value="option1"> In Meet </option>
-                            <option value="option2"> Waiting </option>
-                            <option value="option3"> Fulfilled </option>
-                        </select>
-                      </div>
-                    </div>
-
+                                <form method="POST" action="{{ url_for('admin_dashboard') }}">
+                                    <input type="hidden" name="student_number" value="{{ student.student_number }}">
+                                    <input type="hidden" name="action" value="delete">
+                                    <button type="submit" class="x-button">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </section>
         </div>
-            
-        
+
+
         <div id="button-container">
-            <button class="button-out" onclick="document.location='index.html'">Log Out</button>
-            <button class="button-register" onclick="document.location='advising.html'">Go to Profile</button>
+            <a href="#" onclick="logout()">
+                <button class="button-out">Log Out</button>
+            </a>
+            <a href="{{ url_for('edit_zoom') }}">
+                <button class="button-register">Go to Profile</button>
+            </a>
         </div>
     </div>
 </div>
