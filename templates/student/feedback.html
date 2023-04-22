@@ -7,40 +7,18 @@
     <link rel="stylesheet" type="text/css" href="../../static/styles/student/feedback.css">
     <script>
         function validateForm() {
-            const ratingInputs = document.getElementsByName("rating");
-            let ratingSelected = false;
-            for (let i = 0; i < ratingInputs.length; i++) {
-                if (ratingInputs[i].checked) {
-                    ratingSelected = true;
-                    break;
-                }
-            }
+            const ratingChecked = document.querySelector('input[name="rating"]:checked');
+            const comments = document.getElementById('comments').value;
 
-            if (!ratingSelected) {
-                alert("Please select a rating.");
+            if (!ratingChecked) {
+                alert('Please select a rating.');
                 return false;
-            }
-
-            const commentsInput = document.getElementById("comments");
-            if (!commentsInput.value) {
-                alert("Please provide comments.");
+            } else if (!comments) {
+                alert('Please enter your comments.');
                 return false;
-            }
-
-            else {
-                alert("Thank you for your feedback!");
-                leavePage();
-            }
-
-            return true;
-        }
-
-
-        const logoutUrl = "{{ url_for('logout') }}";
-
-        function leavePage() {
-            if (confirm("Do you want to leave this page?")) {
-                window.location.href = logoutUrl;
+            } else {
+                logout();
+                return true;
             }
         }
     </script>
@@ -56,7 +34,7 @@
     </div>
 
     <div class="feedback-form">
-        <form action="{{ url_for("feedback") }}" method="POST" onsubmit="return validateForm()">
+        <form action="{{ url_for('feedback') }}" method="POST" onsubmit="return validateForm();">
             <label for="rating">How was your experience?</label>
             <div class="smiley-container">
                 <input type="radio" name="rating" value="excellent" id="excellent">
@@ -75,7 +53,6 @@
             <button type="submit">Submit</button>
         </form>
     </div>
-
 </div>
 
 </body>

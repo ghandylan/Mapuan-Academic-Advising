@@ -1,6 +1,7 @@
 import os
-
 import vonage  # sms API
+
+from datetime import datetime
 from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import *
@@ -22,12 +23,15 @@ login_manager.init_app(my_app)
 
 
 @login_manager.user_loader
-def load_user(student_number):
-    return Student.query.get(student_number)
-
-
-def load_admin(admin_number):
-    return Admin.query.get(admin_number)
+def load_user(user_id):
+    student = Student.query.filter_by(student_number=user_id).first()
+    admin = Admin.query.filter_by(admin_number=user_id).first()
+    if student:
+        return student
+    elif admin:
+        return admin
+    else:
+        return None
 
 
 class Student(db.Model, UserMixin):
@@ -42,6 +46,7 @@ class Student(db.Model, UserMixin):
     student_additional_comment = db.Column(String(255))
     queue_order = db.Column(Integer)
     queue_status = db.Column(String(255))
+    is_admin = db.Column(Boolean, nullable=False, default=False)
 
     queue_ID = db.Column(Integer, ForeignKey('queue.queue_ID'))
     queue = relationship("Queue", backref="students")
@@ -64,6 +69,8 @@ class Admin(db.Model, UserMixin):
     admin_name = db.Column(String(255), nullable=False)
     available = db.Column(Boolean, nullable=False, default=True)
     zoom_link = db.Column(String(255))
+    status = db.Column(String(255))
+    is_admin = db.Column(Boolean, nullable=False, default=True)
 
     def is_active(self):
         return True
@@ -87,9 +94,11 @@ class Feedback(db.Model, UserMixin):
     feedback_id = db.Column(Integer, primary_key=True, autoincrement=True)
     feedback = db.Column(String(255), nullable=False)
     student_number = db.Column(String(10), ForeignKey('student.student_number'), nullable=False)
-    student = relationship("Student", backref="feedbacks")
     rating = db.Column(String(255), nullable=False)
     admin_id = db.Column(Integer, ForeignKey('admin.admin_id'), nullable=False)
+    date = db.Column(String(255), nullable=False)
+
+    student = relationship("Student", backref="feedbacks")
     admin = relationship("Admin", backref="feedbacks")
 
 
@@ -99,6 +108,7 @@ class Class(db.Model, UserMixin):
     class_code = db.Column(String(255), nullable=False)
     teacher_name = db.Column(String(255), nullable=False)
     admin_id = db.Column(Integer, ForeignKey('admin.admin_id'), nullable=False)
+
     admin = relationship("Admin", backref="classes")
 
 
@@ -120,10 +130,15 @@ def login():
             if student:
                 session['user_id'] = student.student_number
                 login_user(student, remember=True)
+                print(f'Student {student.student_name} has logged in')
                 return redirect(url_for('student_dashboard'))
             elif admin:
                 session['admin_id'] = admin.admin_id
                 login_user(admin, remember=True)
+                admin.status = 'Online'
+                db.session.commit()
+                print(f'Admin {admin.admin_name} has logged in')
+                print(f'Admin {admin.admin_name} is online')
                 return redirect(url_for('admin_dashboard'))
             else:
                 flash('Invalid email or password', 'warning')
@@ -174,33 +189,18 @@ def student_dashboard():
                 user.queue_status = 'Waiting'
                 db.session.commit()
 
-            return render_template('student/advising.html', user=user, username=user.student_name, admins=admins,
-                                   queue_count=queue_count, admin_id=admin_id, admin_name=admin_name)
-        return render_template('student/enqueue.html', user=user, username=user.student_name, admins=admins,
+            return render_template('student/advising.html',
+                                   user=user,
+                                   username=user.student_name,
+                                   admins=admins,
+                                   queue_count=queue_count,
+                                   admin_id=admin_id,
+                                   admin_name=admin_name)
+        return render_template('student/enqueue.html',
+                               user=user,
+                               username=user.student_name,
+                               admins=admins,
                                queue_count=queue_count)
-
-
-@my_app.route('/feedback', methods=['GET', 'POST'])  # STUDENT VIEW
-@login_required
-def feedback():
-    if request.method == 'POST':
-        user_id = session.get('user_id')
-        user = Student.query.get(user_id)
-        student_number = user.student_number
-
-        rating = request.form.get('rating')
-        comments = request.form.get('comments')
-        adviser = Admin.query.filter_by(admin_id=user.queue_ID).first()
-
-        student_feedback = Feedback(student_number=student_number,
-                                    admin_id=adviser.admin_id,
-                                    feedback=comments,
-                                    rating=rating
-                                    )
-        db.session.add(student_feedback)
-        db.session.commit()
-
-    return render_template('student/feedback.html')
 
 
 @my_app.route('/student_register', methods=['GET', 'POST'])  # STUDENT VIEW
@@ -213,13 +213,14 @@ def student_register():
 
     user.student_concern = concern
     user.student_additional_comment = concerns
-    db.session.commit()
 
     adviser_in_charge = Admin.query.filter_by(admin_id=user.queue_ID).first().admin_name
     queue_count = Student.query.filter_by(queue_ID=user.queue_ID).count()
     zoom_link = Admin.query.filter_by(admin_id=user.queue_ID).first().zoom_link
     queue_order = user.queue_order
     queue_status = user.queue_status
+
+    db.session.commit()
 
     if user_id:
         if request.method == 'POST':
@@ -230,7 +231,8 @@ def student_register():
 
             send_sms_vonage(formatted_number, message)
 
-            return render_template('student/zoom.html', user=user,
+            return render_template('student/zoom.html',
+                                   user=user,
                                    adviser_in_charge=adviser_in_charge,
                                    username=user.student_name,
                                    queue_count=queue_count,
@@ -247,6 +249,52 @@ def get_queue_status():
     queue_status = user.queue_status
 
     return jsonify(queue_status=queue_status)
+
+
+@my_app.route('/feedback', methods=['GET', 'POST'])  # STUDENT VIEW
+@login_required
+def feedback():
+    if request.method == 'POST':
+        now = datetime.now()
+        user_id = session.get('user_id')
+        user = Student.query.get(user_id)
+
+        student_number = user.student_number
+        adviser = Admin.query.filter_by(admin_id=user.queue_ID).first()
+        comments = request.form.get('comments')
+        rating = request.form.get('rating')
+        date = now.strftime("%Y-%m-%d %H:%M:%S")
+
+        student_feedback = Feedback(feedback=comments,
+                                    student_number=student_number,
+                                    rating=rating,
+                                    admin_id=adviser.admin_id,
+                                    date=date
+                                    )
+
+        user.student_concern = "Other"
+        user.student_additional_comment = None
+        user.queue_order = 0
+        user.queue_status = None
+        user.queue_ID = None
+        db.session.add(student_feedback)
+        db.session.commit()
+        return redirect(url_for('exit_confirmation'))
+
+    #     if user wants to log out
+
+    return render_template('student/feedback.html')
+
+
+@my_app.route('/exit_confirmation', methods=['GET', 'POST'])  # STUDENT VIEW
+def exit_confirmation():
+    if request.method == 'POST':
+        if 'Yes' in request.form:
+            return redirect(url_for('student_dashboard'))
+        else:
+            return redirect(url_for('logout'))
+
+    return render_template('student/exit_confirmation.html')
 
 
 @my_app.route('/admin_dashboard', methods=['GET', 'POST'])  # ADMIN VIEW
@@ -269,10 +317,6 @@ def admin_dashboard():
         if action == 'check':
             student.queue_status = 'Fulfilled'
             if student.queue_order == 1:
-                # student.queue_order = None
-                # student.student_concern = None
-                # student.student_additional_comment = None
-                # student.queue_ID = None
                 db.session.commit()
                 # update queue order of all students in queue
                 students = Student.query.filter(Student.queue_ID == user_id).all()
@@ -285,6 +329,11 @@ def admin_dashboard():
         elif action == 'delete':
             # perform delete action
             db.session.delete(student)
+            # update queue order of all students in queue
+            students = Student.query.filter(Student.queue_ID == user_id).all()
+            for student in students:
+                if student.queue_order > student.queue_order:
+                    student.queue_order = student.queue_order - 1
             db.session.commit()
     return render_template('admin/Livelist-admin.html', user=user, username=user.admin_name, students=students)
 
@@ -301,10 +350,25 @@ def login_page():
     return render_template('login.html', error=error)
 
 
-@my_app.route('/logout')  # LOGOUT
+@my_app.route('/logout', methods=['GET', 'POST'])  # LOGOUT
 @login_required
 def logout():
+    if current_user.is_admin:
+        current_user.status = "Offline"
+        print(f"Admin {current_user.admin_name} logged out")
+    else:
+        current_user.student_concern = "Other"
+        current_user.student_additional_comment = ""
+        current_user.queue_order = 0
+        current_user.queue_status = ""
+        current_user.queue_ID = None
+        db.session.commit()
+
+        print(f"Student {current_user.student_name} logged out")
+
+    db.session.commit()
     logout_user()
+
     flash('Logged out successfully', 'success')
     return redirect(url_for('login_page'))
 
