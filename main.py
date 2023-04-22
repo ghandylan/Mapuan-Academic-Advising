@@ -16,6 +16,8 @@ my_app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/academi
 my_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 my_app.config['SECRET_KEY'] = 'secret'
 db = SQLAlchemy(my_app)
+my_app.config['SESSION_TYPE'] = 'filesystem'
+Session(my_app)
 
 login_manager = LoginManager()
 login_manager.login_view = '/login'
@@ -129,9 +131,15 @@ def login():
             admin = Admin.query.filter_by(admin_email=email, admin_password=password).first()
             if student:
                 session['user_id'] = student.student_number
-                login_user(student, remember=True)
                 print(f'Student {student.student_name} has logged in')
-                return redirect(url_for('student_dashboard'))
+
+                login_user(student, remember=True)
+                # check is studeent is already in queue
+                queue = Queue.query.filter_by(admin_id=student.queue_ID).first()
+                if queue:
+                    return redirect(url_for('waiting_page'))
+                else:
+                    return redirect(url_for('student_dashboard'))
             elif admin:
                 session['admin_id'] = admin.admin_id
                 login_user(admin, remember=True)
@@ -156,6 +164,7 @@ def student_dashboard():
     # check if user is logged in
     user_id = session.get('user_id')
     if user_id:
+
         user = Student.query.get(user_id)
         # count the number of students with the Queue_ID 1
         queue_count = Queue.query.filter_by(admin_id=user_id).count()
@@ -166,7 +175,6 @@ def student_dashboard():
 
         # get the selected admin from the form
         admin_id = request.form.get('admin_id')
-
         if request.method == 'POST':
             # get the name of the selected admin from the database
             admin_name = Admin.query.filter_by(admin_id=admin_id).first().admin_name
@@ -224,22 +232,46 @@ def student_register():
 
     if user_id:
         if request.method == 'POST':
+            newline = '\n'
             formatted_number = '+' + user.student_contact_no
-            message = f'Hi {user.student_name}, you are now in the queue. Your adviser is {adviser_in_charge}. ' \
-                      f'Here is your zoom link {zoom_link}' \
-                      f'Please wait for your turn and do not close the page. Thank you!'
+
+            message = f'Hi {user.student_name}, you are now in the queue. Your adviser is {adviser_in_charge}.{newline}Here is your zoom link:{newline}{zoom_link} {newline}Please wait for your turn and do not close the page. {newline}Thank you!'
 
             send_sms_vonage(formatted_number, message)
-
-            return render_template('student/zoom.html',
-                                   user=user,
-                                   adviser_in_charge=adviser_in_charge,
-                                   username=user.student_name,
-                                   queue_count=queue_count,
-                                   queue_order=queue_order,
-                                   zoom_link=zoom_link)
+            return redirect(url_for('waiting_page'))
+            # return render_template('student/zoom.html',
+            #                        user=user,
+            #                        adviser_in_charge=adviser_in_charge,
+            #                        username=user.student_name,
+            #                        queue_count=queue_count,
+            #                        queue_order=queue_order,
+            #                        zoom_link=zoom_link)
 
     return jsonify(queue_count=queue_count, queue_order=queue_order, queue_status=queue_status)
+
+
+@my_app.route('/waiting_page', methods=['GET', 'POST'])  # STUDENT VIEW
+def waiting_page():
+    user_id = session.get('user_id')
+    user = Student.query.get(user_id)
+    concern = request.form.get('concerns')  # dropdown
+    concerns = request.form.get('concern')  # text area
+
+    user.student_concern = concern
+    user.student_additional_comment = concerns
+
+    adviser_in_charge = Admin.query.filter_by(admin_id=user.queue_ID).first().admin_name
+    queue_count = Student.query.filter_by(queue_ID=user.queue_ID).count()
+    zoom_link = Admin.query.filter_by(admin_id=user.queue_ID).first().zoom_link
+    queue_order = user.queue_order
+    queue_status = user.queue_status
+    return render_template('student/zoom.html',
+                           user=user,
+                           adviser_in_charge=adviser_in_charge,
+                           username=user.student_name,
+                           queue_count=queue_count,
+                           queue_order=queue_order,
+                           zoom_link=zoom_link)
 
 
 @my_app.route('/get_queue_status')  # STUDENT VIEW
@@ -338,9 +370,47 @@ def admin_dashboard():
     return render_template('admin/Livelist-admin.html', user=user, username=user.admin_name, students=students)
 
 
+@my_app.route('/feedback_dashboard', methods=['GET', 'POST'])  # ADMIN VIEW
+def feedback_dashboard():
+    user_id = session.get('admin_id')
+    user = Admin.query.get(user_id)
+
+    excellent = db.session.query(Feedback).filter(Feedback.rating == "excellent").count()
+    good = db.session.query(Feedback).filter(Feedback.rating == "good").count()
+    fair = db.session.query(Feedback).filter(Feedback.rating == "ok").count()
+    poor = db.session.query(Feedback).filter(Feedback.rating == "poor").count()
+    terrible = db.session.query(Feedback).filter(Feedback.rating == "terrible").count()
+
+    feedback_entries = Feedback.query.all()
+
+    feedbacks = Feedback.query.filter_by(admin_id=user_id).all()
+    return render_template('admin/Feedback-admin.html',
+                           user=user,
+                           username=user.admin_name,
+                           feedbacks=feedbacks,
+                           excellent=excellent,
+                           good=good,
+                           fair=fair,
+                           poor=poor,
+                           terrible=terrible,
+                           feedback_entries=feedback_entries)
+
+
 @my_app.route('/edit_zoom')  # ADMIN VIEW
 def edit_zoom():
-    return render_template('admin/editzoom-admin.html')
+    user_id = session.get('admin_id')
+    user = Admin.query.get(user_id)
+    admin_name = user.admin_name
+    zoom_link = user.zoom_link
+    status = user.status
+
+    admins = Admin.query.all()
+
+    return render_template('admin/editzoom-admin.html',
+                           user=user,
+                           username=admin_name,
+                           zoom_link=zoom_link,
+                           status=status, admins=admins)
 
 
 @my_app.route('/login_page')  # LOGIN PAGE
@@ -350,12 +420,27 @@ def login_page():
     return render_template('login.html', error=error)
 
 
+@my_app.route('/logout_warning', methods=['GET', 'POST'])  # ADMIN VIEW
+def logout_warning():
+    if request.method == 'POST':
+        if request.form['warning'] == 'return':
+            return redirect(url_for('admin_dashboard'))
+
+    return render_template('admin/logout-warning.html')
+
+
 @my_app.route('/logout', methods=['GET', 'POST'])  # LOGOUT
 @login_required
 def logout():
     if current_user.is_admin:
-        current_user.status = "Offline"
-        print(f"Admin {current_user.admin_name} logged out")
+        students = db.session.query(Student).filter(Student.queue_ID == current_user.admin_id).order_by(
+            asc(Student.queue_order)).count()
+        if students > 0:
+            flash('Please check all students before logging out', 'error')
+            return redirect(url_for('logout_warning'))
+        else:
+            current_user.status = "Offline"
+            print(f"Admin {current_user.admin_name} logged out")
     else:
         current_user.student_concern = "Other"
         current_user.student_additional_comment = ""

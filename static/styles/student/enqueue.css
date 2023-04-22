@@ -1,194 +1,199 @@
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: Georgia, serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Georgia, serif;
 }
 
 .topheader {
-  width: 100%;
-  height: 120px;
-  display: block;
+    width: 100%;
+    height: 120px;
+    display: block;
 }
 
 .headergap {
-  margin-top: 150px;
+    margin-top: 150px;
 }
 
 /* Label CSS */
 
 .Label {
-  padding-left: 90px;
-  width: 100%;
-  margin-top: 10%;
-  display: block;
+    padding-left: 90px;
+    width: 100%;
+    margin-top: 10%;
+    display: block;
 }
 
 .FAQtext {
-  font-size: 30px;
+    font-size: 30px;
 }
 
 /* Styles */
 
 h2 {
-  color: white;
+    color: white;
 }
 
 body {
-  width: 100%;
-  background-color: #333333;
-  align-items: center;
-  justify-content: center;
+    width: 100%;
+    background-color: #333333;
+    align-items: center;
+    justify-content: center;
 }
 
 .body-container {
-  width: 100%;
-  margin-top: 9%;
-  display: block;
+    width: 100%;
+    margin-top: 9%;
+    display: block;
 }
 
 body::after {
-  content: '';
-  display: block;
-  position: fixed;
-  width: 100%;
-  height: 20px;
-  background-color: #DA4242;
+    content: '';
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 20px;
+    background-color: #DA4242;
 }
 
 body::after {
-  bottom: 0;
+    bottom: 0;
 }
 
 /* Header CSS */
 
 .header {
-  width: 100%;
-  background-color: #DA4242;
-  padding-top: 1%;
-  padding-bottom: 2%;
-  text-align: center;
-  margin: 0;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
+    width: 100%;
+    background-color: #DA4242;
+    padding-top: 1%;
+    padding-bottom: 2%;
+    text-align: center;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
 /*logo CSS*/
 
 .header img {
-  width: 100%;
-  max-width: 150px;
-  height: 100%;
-  position: absolute;
-  top: 5px;
-  left: 10%;
-  transform: translateX(-50%);
-  z-index: 1;
-  /* Set a lower z-index value */
+    width: 100%;
+    max-width: 150px;
+    height: 100%;
+    position: absolute;
+    top: 5px;
+    left: 10%;
+    transform: translateX(-50%);
+    z-index: 1;
+    /* Set a lower z-index value */
 }
 
 .header::after {
-  content: '';
-  position: absolute;
-  bottom: 15px;
-  left: -0.1%;
-  /* Adjust this value to move the line to the right or left */
-  width: 101%;
-  height: 15px;
-  background-color: #FFD700;
-  z-index: 0;
-  /* Set a higher z-index value */
+    content: '';
+    position: absolute;
+    bottom: 15px;
+    left: -0.1%;
+    /* Adjust this value to move the line to the right or left */
+    width: 101%;
+    height: 15px;
+    background-color: #FFD700;
+    z-index: 0;
+    /* Set a higher z-index value */
 }
 
 .header h1 {
-  font-size: 36px;
-  color: #fff;
-  margin-bottom: 10px;
+    font-size: 36px;
+    color: #fff;
+    margin-bottom: 10px;
 }
 
 .header p {
-  font-size: 18px;
-  color: #fff;
-  margin-bottom: 10px;
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 10px;
 }
 
 h1 {
-  text-align: center;
-  color: #fff;
+    text-align: center;
+    color: #fff;
 }
 
 /*Table CSS*/
 
 table {
-  width: 95%;
-  margin: auto;
-  border-collapse: collapse;
-  margin-top: 20px;
+    width: 95%;
+    margin: auto;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
 th,
 td {
-  border: 1px solid #ccc;
-  padding: 8px;
-  text-align: left;
-  background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+    background-color: #fff;
 }
 
 th {
-  background-color: #BEBEBE;
-  text-align: center;
+    background-color: #BEBEBE;
+    text-align: center;
 }
 
 tbody tr:hover {
-  background-color: #f9f9f9;
+    background-color: #f9f9f9;
 }
 
 input[type="radio"] {
-  margin: 0;
-  vertical-align: middle;
+    margin: 0;
+    vertical-align: middle;
 }
 
 /*Buttons CSS*/
 #button-container {
-  justify-content: center;
-  /* Center the buttons horizontally */
-  display: flex;
-  height: 120px;
-  align-items: center;
-  text-align: center;
+    justify-content: center;
+    /* Center the buttons horizontally */
+    display: flex;
+    height: 120px;
+    align-items: center;
+    text-align: center;
 }
 
 input[type="submit"] {
-  margin: 0 20px;
-  color: #000000;
-  background-color: #FFD700;
-  padding: 15px 50px;
-  border: none;
-  border-radius: 25px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+    margin: 0 20px;
+    color: #000000;
+    background-color: #FFD700;
+    padding: 15px 50px;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+tr.disabled {
+    color: #aaa;
+    pointer-events: none;
 }
 
 .logout {
-  margin: 0 20px;
-  color: #000000;
-  background-color: #FFD700;
-  padding: 15px 50px;
-  border: none;
-  border-radius: 25px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
+    margin: 0 20px;
+    color: #000000;
+    background-color: #FFD700;
+    padding: 15px 50px;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
 }
 
 /*Button hover CSS*/
 input[type="submit"]:hover {
-  background-color: #f7d563;
+    background-color: #f7d563;
 }
 
 .logout:hover {
-  background-color: #f7d563;
+    background-color: #f7d563;
 }

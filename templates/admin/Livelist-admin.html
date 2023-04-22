@@ -36,14 +36,23 @@
         const logoutUrl = "{{ url_for('logout') }}";
 
         function logout() {
+            // Check if there are any students with queue status other than "Fulfilled"
+            const waitingStudents = document.querySelectorAll('.list .row:not(.greyed-out)');
+            if (waitingStudents.length > 1) {
+                // Display alert message and return without logging out
+                alert('There are still students waiting in the queue. Please attend to them before logging out.');
+                return;
+            }
             if (confirm('Are you sure you want to logout?')) {
                 window.location.href = logoutUrl;
             }
         }
+
     </script>
 </head>
 
 <body>
+
 <div class="body-container">
     <header class="header">
         <img src="../../static/img/mymapua.png" alt="Logo">

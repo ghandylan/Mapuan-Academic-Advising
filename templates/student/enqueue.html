@@ -46,10 +46,10 @@
 <h1>Admin List</h1>
 <form action="/student_dashboard" method="post" onsubmit="return validateForm();">
     <!-- Replace with appropriate form action URL -->
-    <table>
+    <table id="admin-table">
         <thead>
         <tr>
-            <th>Admin ID</th>
+            <th>Admin Status</th>
             <th>Admin Name</th>
             <th>Queue Count</th>
             <th>Select</th>
@@ -58,10 +58,10 @@
 
         <tbody>
         {% for admin in admins %}
-            <tr>
-                <td>{{ admin.admin_id }}</td>
+            <tr {% if admin.status == 'Offline' %}class="disabled"{% endif %}>
+                <td style="color: {% if admin.status == 'Offline' %}darkred{% else %}green{% endif %}">{{ admin.status }}</td>
                 <td>{{ admin.admin_name }}</td>
-                <td>{{ admin.queue_count }}</td> <!-- Replace with appropriate attribute for queue count -->
+                <td>{{ admin.queue_count }}</td>
                 <td><input type="radio" name="admin_id" value="{{ admin.admin_id }}"></td>
             </tr>
         {% endfor %}

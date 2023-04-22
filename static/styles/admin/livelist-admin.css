@@ -262,3 +262,43 @@ select {
     cursor: pointer;
     color: green;
 }
+
+/* banners */
+.warning-alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: .25rem;
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.error-alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: .25rem;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.success-alert {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: .25rem;
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}

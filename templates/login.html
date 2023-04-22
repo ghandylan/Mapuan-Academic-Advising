@@ -9,18 +9,6 @@
 
 <body>
 
-
-{#{% with messages = get_flashed_messages() %}#}
-{#  {% if messages %}#}
-{#    <ul class="flashes">#}
-{#    {% for message in messages %}#}
-{#      <li class="{{ message[1] }}">{{ message[0] }}</li>#}
-{#    {% endfor %}#}
-{#    </ul>#}
-{#  {% endif %}#}
-{#{% endwith %}#}
-
-
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         {% for category, message in messages %}
