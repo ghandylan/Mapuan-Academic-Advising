@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../static/styles/admin/FAQ-Admin.css">
+    <title>Frequently Asked Questions - Admin</title>
+    <script>
+        function enableEditingFAQ() {
+            const editableText = document.getElementById("editFAQ");
+            editableText.contentEditable = true;
+            editableText.focus();
+        }
+    </script>
+</head>
+<body>
+<!-- header -->
+<div>
+    <header class="header">
+        <img src="../../static/img/mymapua.png" alt="My Image" style="max-width: 150px;">
+        <h1>Welcome *admin name,*</h1>
+        <p>Mapua Academic Advising</p>
+    </header>
+</div>
+<!-- Begin FAQ  -->
+<div class="Label">
+    <h2 class="FAQtext">Frequently Asked Questions</h2>
+</div>
+<br>
+<div class="FAQcontainer">
+    <div class="box1" id="editFAQ">
+        <div>
+            <div style="text-align: center;">Step-by-step process of academic advising</div>
+        </div>
+        <br>The Mapuan academic advising is a web application dedicated to resolving enrollment concerns of currently
+        enrolled Mapuan students. This includes scheduling concerns, missing requirements, document requests, grade
+        changes, section changes, and more.
+        <br>
+        <br>1. Log in to the Mapuan Advising website using your MyMapua e-mail address and password
+        <br>
+        <br>2. Select which professor you choose to resolve your problem (You may also see their queue line).
+        <br>
+        <br>3. After selecting the professor, fill out the details on the advising request form.
+        <br>
+        <br>4. There would be an SMS confirmation sent to your mobile phone.
+        <br>
+        <br>5. Patiently wait for your turn for the academic advising.
+        <br>
+        <br>6. When it’s your turn, click the Zoom link to be redirected to the Zoom meeting of the assigned professor.
+        <br>
+        <br>7. After your academic advising, give us feedback on your experience using the website.
+    </div>
+    <!-- Button Containers  -->
+    <div id="button-container">
+        <button class="logout" onclick="document.location='index.html'">Log Out</button>
+        <button class="MyStats" onclick="document.location='editzoom-admin.html'">Edit Zoom Links</button>
+        <button class="ReturnQueue" onclick="document.location='livelist-admin.html'">Back To Live list</button>
+        <button class="edit" onclick="enableEditingFAQ()">Edit FAQ</button>
+    </div>
+</div>
+</body>
+</html>

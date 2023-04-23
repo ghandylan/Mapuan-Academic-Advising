@@ -218,13 +218,12 @@ def student_register():
     user = Student.query.get(user_id)
     concern = request.form.get('concerns')  # dropdown
     concerns = request.form.get('concern')  # text area
-
-    user.student_concern = concern
-    user.student_additional_comment = concerns
-
     adviser_in_charge = Admin.query.filter_by(admin_id=user.queue_ID).first().admin_name
     queue_count = Student.query.filter_by(queue_ID=user.queue_ID).count()
     zoom_link = Admin.query.filter_by(admin_id=user.queue_ID).first().zoom_link
+
+    user.student_concern = concern
+    user.student_additional_comment = concerns
     queue_order = user.queue_order
     queue_status = user.queue_status
 
@@ -239,13 +238,6 @@ def student_register():
 
             send_sms_vonage(formatted_number, message)
             return redirect(url_for('waiting_page'))
-            # return render_template('student/zoom.html',
-            #                        user=user,
-            #                        adviser_in_charge=adviser_in_charge,
-            #                        username=user.student_name,
-            #                        queue_count=queue_count,
-            #                        queue_order=queue_order,
-            #                        zoom_link=zoom_link)
 
     return jsonify(queue_count=queue_count, queue_order=queue_order, queue_status=queue_status)
 
@@ -254,17 +246,12 @@ def student_register():
 def waiting_page():
     user_id = session.get('user_id')
     user = Student.query.get(user_id)
-    concern = request.form.get('concerns')  # dropdown
-    concerns = request.form.get('concern')  # text area
-
-    user.student_concern = concern
-    user.student_additional_comment = concerns
 
     adviser_in_charge = Admin.query.filter_by(admin_id=user.queue_ID).first().admin_name
     queue_count = Student.query.filter_by(queue_ID=user.queue_ID).count()
     zoom_link = Admin.query.filter_by(admin_id=user.queue_ID).first().zoom_link
     queue_order = user.queue_order
-    queue_status = user.queue_status
+
     return render_template('student/zoom.html',
                            user=user,
                            adviser_in_charge=adviser_in_charge,
@@ -316,6 +303,11 @@ def feedback():
     #     if user wants to log out
 
     return render_template('student/feedback.html')
+
+
+@my_app.route('/faq', methods=['GET', 'POST'])  # STUDENT VIEW
+def faq():
+    return render_template('student/FAQ.html')
 
 
 @my_app.route('/exit_confirmation', methods=['GET', 'POST'])  # STUDENT VIEW
@@ -370,6 +362,11 @@ def admin_dashboard():
     return render_template('admin/Livelist-admin.html', user=user, username=user.admin_name, students=students)
 
 
+@my_app.route('/edit_faq', methods=['GET', 'POST'])  # ADMIN VIEW
+def edit_faq():
+    return render_template('admin/FAQ-admin.html')
+
+
 @my_app.route('/feedback_dashboard', methods=['GET', 'POST'])  # ADMIN VIEW
 def feedback_dashboard():
     user_id = session.get('admin_id')
@@ -382,6 +379,7 @@ def feedback_dashboard():
     terrible = db.session.query(Feedback).filter(Feedback.rating == "terrible").count()
 
     feedback_entries = Feedback.query.all()
+    feedback_entries.reverse()
 
     feedbacks = Feedback.query.filter_by(admin_id=user_id).all()
     return render_template('admin/Feedback-admin.html',
@@ -394,6 +392,16 @@ def feedback_dashboard():
                            poor=poor,
                            terrible=terrible,
                            feedback_entries=feedback_entries)
+
+
+@my_app.route('/update_zoom_link', methods=['POST'])  # ADMIN VIEW
+def update_zoom_link():
+    zoom_link = request.form['zoomLink']
+    user_id = session.get('admin_id')
+    user = Admin.query.get(user_id)
+    user.zoom_link = zoom_link
+    db.session.commit()
+    return redirect(url_for('edit_zoom'))
 
 
 @my_app.route('/edit_zoom')  # ADMIN VIEW
@@ -410,14 +418,8 @@ def edit_zoom():
                            user=user,
                            username=admin_name,
                            zoom_link=zoom_link,
-                           status=status, admins=admins)
-
-
-@my_app.route('/login_page')  # LOGIN PAGE
-def login_page():
-    #     show error message if login failed
-    error = request.args.get('error')
-    return render_template('login.html', error=error)
+                           status=status,
+                           admins=admins)
 
 
 @my_app.route('/logout_warning', methods=['GET', 'POST'])  # ADMIN VIEW
@@ -427,6 +429,13 @@ def logout_warning():
             return redirect(url_for('admin_dashboard'))
 
     return render_template('admin/logout-warning.html')
+
+
+@my_app.route('/login_page')  # LOGIN PAGE
+def login_page():
+    #     show error message if login failed
+    error = request.args.get('error')
+    return render_template('login.html', error=error)
 
 
 @my_app.route('/logout', methods=['GET', 'POST'])  # LOGOUT

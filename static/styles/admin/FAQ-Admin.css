@@ -1,0 +1,171 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Georgia, serif;
+}
+
+.topheader{
+    width: 100%;
+    height: 120px;
+    display: block;
+}
+
+/* Label CSS */
+
+.Label{
+    padding-left: 90px;
+    width: 100%;
+    margin-top: 10%;
+    display: block;
+}
+
+.FAQtext{
+    font-size: 30px;
+}
+
+/* Styles */
+
+h2{
+    color: white;
+}
+
+body {
+    width: 100%;
+    background-color: #333333;
+    align-items: center;
+    justify-content: center;
+}
+
+.body-container{
+    width: 100%;
+    margin-top: 9%;
+    display: block;
+}
+
+body::after {
+    content: '';
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 20px;
+    background-color: #DA4242;
+}
+
+body::after {
+    bottom: 0;
+}
+
+/* Header CSS */
+
+.header {
+    width: 100%;
+    background-color: #DA4242;
+    padding-top: 1%;
+    padding-bottom: 2%;
+    text-align: center;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+/*logo CSS*/
+
+.header img {
+	width: 100%;
+	max-width: 150px;
+	height: auto;
+	position: absolute;
+	top: -18px;
+	left: 10%;
+	transform: translateX(-50%);
+    z-index: 1; /* Set a higher z-index value to bring the image in front */
+}
+
+.header::after {
+    content: '';
+    position: absolute;
+    bottom: 15px;
+    left: -0.1%; /* Adjust this value to move the line to the right or left */
+    width: 101%;
+    height: 15px;
+    background-color: #FFD700;
+    z-index: 0; /* Set a higher z-index value */
+}
+
+.header h1 {
+    font-size: 36px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 18px;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+/*FAQ Content CSS*/
+
+.FAQcontainer {
+    align-items: left;
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    margin: auto;
+}
+
+.box1 {
+    text-align: justify;
+    font-size: 18px;
+    padding-top: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
+    padding-bottom: 20px;
+    height: auto;
+    border-radius: 25px;
+    background-color: #fff;
+    margin-bottom: 20px; /* add some space between the boxes */
+}
+
+/*Button CSS*/
+
+#button-container{
+    display: flex;
+    height: 120px;
+    align-items: center;
+    text-align: center;
+}
+
+.logout, .MyStats, .ReturnQueue, .edit{
+    color: #000000;
+    background-color: #FFD700;
+    padding: 15px 60px;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 30px; /* Add margin */
+    transition: background-color 0.3s ease-in-out;
+}
+
+/*Button  hover CSS*/
+
+.logout:hover {
+    background-color: #f7d563;
+}
+
+.MyStats:hover {
+    background-color: #f7d563;
+}
+
+.ReturnQueue:hover {
+    background-color: #f7d563;
+}
+
+.edit:hover {
+    background-color: #f7d563;
+}
+

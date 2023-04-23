@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../static/styles/admin/editzoom.css">
+    <link rel="icon" type="Acads.png" href="../../static/img/Cardi Icon.png">
+
     <title>Edit Dashboard</title>
     <script>
         const logoutUrl = "{{ url_for('logout') }}";
@@ -39,6 +41,8 @@
             editableText.contentEditable = true;
             editableText.focus();
         }
+
+
     </script>
 </div>
 
@@ -64,16 +68,24 @@
                     <div class="row">
                         <div class="column1">
                             <div class="namecontainer">
-                                <p id="editNameAdvisor8">{{ admin.admin_name }}</p>
+                                {{ admin.admin_name }}{% if admin.admin_name == username %} <b>(You)</b>{% endif %}
                             </div>
                             <div class="editname">
                                 <button class="editnamebutton" onclick="enableEditingAdvisor8()"></button>
                             </div>
                         </div>
-                        <div class="column2">
-                            <p id="editZoom8"><a href="{{ admin.zoom_link }}">
-                                {{ admin.zoom_link }}</a></div>
-                        <button class="editlink" onclick="enableeditZoomLink8()"></button>
+                        <form action="{{ url_for('update_zoom_link') }}" method="POST">
+                            <div class="input-group">
+                                <input type="text" id="zoomLink" name="zoomLink" value="{{ admin.zoom_link }}"
+                                       style="width: 140%">
+                                <div class="input-group-append">
+                                    <button type="submit"
+                                            style="background-color: #007bff; color: #fff; border-radius: 5px; padding: 5px 10px; margin-left: 90px">
+                                        Edit
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
 
 
                         <div class="column3">
@@ -85,7 +97,6 @@
                                 <p>{{ admin.status }}</p>
                             {% endif %}
                         </div>
-
                     </div>
                 {% endfor %}
 
