@@ -376,15 +376,6 @@ def admin_dashboard():
             db.session.commit()
             print(student_number)
 
-        elif action == 'delete':
-            # remove the student from the queue
-            db.session.delete()
-            # update queue order of all students in queue
-            students = Student.query.filter(Student.queue_ID == user_id).all()
-            for student in students:
-                if student.queue_order > student.queue_order:
-                    student.queue_order = student.queue_order - 1
-            db.session.commit()
     return render_template('admin/Livelist-admin.html', user=user, username=user.admin_name, students=students)
 
 

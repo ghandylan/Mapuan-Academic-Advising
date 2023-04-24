@@ -163,7 +163,6 @@ section {
 
 .editnamebutton {
     margin-left: 25px;
-    background-image: url('');
     background-size: cover;
     width: 30px;
     /* Set the width and height to match the size of your image */
@@ -172,7 +171,6 @@ section {
 }
 
 .editlink {
-    background-image: url('../../img/editicon.png');
     background-size: cover;
     width: 30px;
     /* Set the width and height to match the size of your image */

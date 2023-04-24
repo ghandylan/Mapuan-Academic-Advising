@@ -71,11 +71,18 @@
             <section class="livequeue">
                 <div class="list">
                     <div class="row">
+                        <div class="column-header"><b></b></div>
                         <div class="column-header"><b>Name</b></div>
+                        <div class="column-header"><b></b></div>
+                        <div class="column-header"><b></b></div>
+                        <div class="column-header"><b></b></div>
                         <div class="column-header"><b>Year and Program</b></div>
+                        <div class="column-header"><b></b></div>
+                        <div class="column-header"><b></b></div>
+                        <div class="column-header"><b></b></div>
                         <div class="column-header"><b>Status</b></div>
                         <div class="column-header"><b></b></div>
-                        <div class="column-header"><b></b></div>
+
 
                     </div>
 
@@ -108,14 +115,6 @@
                                     <input type="hidden" name="action" value="check">
                                     <button type="submit" class="check-button">
                                         <i class="fas fa-check"></i>
-                                    </button>
-                                </form>
-
-                                <form method="POST" action="{{ url_for('admin_dashboard') }}">
-                                    <input type="hidden" name="student_number" value="{{ student.student_number }}">
-                                    <input type="hidden" name="action" value="delete">
-                                    <button type="submit" class="x-button">
-                                        <i class="fas fa-times"></i>
                                     </button>
                                 </form>
                             </div>

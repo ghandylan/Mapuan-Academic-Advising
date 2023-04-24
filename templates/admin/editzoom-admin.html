@@ -10,7 +10,7 @@
     <title>Edit Dashboard</title>
     <script>
         const logoutUrl = "{{ url_for('logout') }}";
-
+        
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
                 window.location.href = logoutUrl;
@@ -69,9 +69,6 @@
                         <div class="column1">
                             <div class="namecontainer">
                                 {{ admin.admin_name }}{% if admin.admin_name == username %} <b>(You)</b>{% endif %}
-                            </div>
-                            <div class="editname">
-                                <button class="editnamebutton" onclick="enableEditingAdvisor8()"></button>
                             </div>
                         </div>
                         <form action="{{ url_for('update_zoom_link') }}" method="POST">
