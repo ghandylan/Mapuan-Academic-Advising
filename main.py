@@ -245,6 +245,7 @@ def student_register():
         print(message)
         send_sms_vonage(formatted_number, message)
         user.sms_sent = True
+        session['queue_entry_time'] = datetime.now()  # Set the queue entry time to the current time
         db.session.commit()
 
     return jsonify(queue_count=queue_count, queue_order=queue_order, queue_status=queue_status)
@@ -269,7 +270,23 @@ def waiting_page():
                            zoom_link=zoom_link)
 
 
-@my_app.route('/get_queue_status')  # STUDENT VIEW
+@my_app.route('/dummy_zoom')  # STUDENT VIEW
+def dummy_zoom():
+    user_id = session.get('user_id')
+    user = Student.query.get(user_id)
+    queue_count = Student.query.filter_by(queue_ID=user.queue_ID).count()
+    zoom_link = Admin.query.filter_by(admin_id=user.queue_ID).first().zoom_link
+    queue_order = user.queue_order
+
+    adviser_in_charge = Admin.query.filter_by(admin_id=user.queue_ID).first().admin_name
+    return render_template('student/dummy_zoom.html',
+                           adviser_in_charge=adviser_in_charge,
+                           queue_count=queue_count,
+                           zoom_link=zoom_link,
+                           queue_order=queue_order, user=user)
+
+
+@my_app.route('/get_queue_status')  # STUDENT VIEW 1 usage in zoom.html and 1 usage in dummy_zoom.html
 def get_queue_status():
     user_id = session.get('user_id')
     user = Student.query.get(user_id)
@@ -278,7 +295,7 @@ def get_queue_status():
     return jsonify(queue_status=queue_status)
 
 
-@my_app.route('/feedback', methods=['GET', 'POST'])  # STUDENT VIEW
+@my_app.route('/feedback', methods=['GET', 'POST'])  # STUDENT VIEW 1 form usage in feedback.html
 @login_required
 def feedback():
     if request.method == 'POST':
@@ -360,8 +377,8 @@ def admin_dashboard():
             print(student_number)
 
         elif action == 'delete':
-            # perform delete action
-            db.session.delete(student)
+            # remove the student from the queue
+            db.session.delete()
             # update queue order of all students in queue
             students = Student.query.filter(Student.queue_ID == user_id).all()
             for student in students:

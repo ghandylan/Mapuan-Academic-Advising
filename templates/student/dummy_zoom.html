@@ -5,11 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Zoom Link</title>
-    <link rel="stylesheet" href="../../static/styles/student/zoomstyle.css">
+    <link rel="stylesheet" href="../../static/styles/student/dummy_zoom.css">
     <link rel="icon" type="Acads.png" href="../../static/img/Cardi Icon.png">
     <script>
         const logoutUrl = "{{ url_for('logout') }}";
-        const dummyUrl = "{{ url_for('dummy_zoom') }}";
 
         function logout() {
             if (confirm('Are you sure you want to logout? You will be kicked out of the queue.')) {
@@ -36,11 +35,13 @@
 
                     if (queue_order === 1) {
                         window.location.href = dummyUrl;
+                        $('#zoom-link').show();
+
+
                     }
                 }
             });
         }, 500); // send request every 0.5 seconds
-
 
         // function that checks the queue status every 5 seconds
         function checkQueueStatus() {
@@ -66,7 +67,7 @@
 <body>
 
 <header>
-    <h1 class="head">Welcome, {{ username }}!</h1>
+    <h1 class="head">Welcome, {{ user.student_name }}!</h1>
 </header>
 
 <div class="container">
@@ -100,9 +101,9 @@
         <div class="grid-item"><a href="#"
                                   class="button">Zoom Link:</a></div>
         <div class="grid-item">
-            <h3>
-                <div class="queue-tag">Please wait for your turn</div>
-            </h3>
+            <p class="zoom-link" id="zoom-link">
+                <b>Click here:</b> <a href="{{ zoom_link }}">{{ zoom_link }}</a>
+            </p>
         </div>
 
 
