@@ -1,28 +1,28 @@
 /*header*/
 
 header {
-	background-color: #DA4242;
-	padding: 1.5% 4% 1.1% 0;
-	text-align: right;
-	position: relative;
+    background-color: #DA4242;
+    padding: 1.5% 4% 1.1% 0;
+    text-align: right;
+    position: relative;
 }
 
 header::after {
-	content: '';
-	position: absolute;
-	bottom: 15px;
-	left: -0.1%; /* Adjust this value to move the line to the right or left */
-	width: 100%;
-	height: 15px;
-	background-color: #FFD700;
+    content: '';
+    position: absolute;
+    bottom: 15px;
+    left: -0.1%; /* Adjust this value to move the line to the right or left */
+    width: 100%;
+    height: 15px;
+    background-color: #FFD700;
 }
 
-body{
+body {
     margin: 0;
-	padding: 0;
-	font-family: Georgia, serif;
-	background-color: #333333;
-	color: white;
+    padding: 0;
+    font-family: Georgia, serif;
+    background-color: #333333;
+    color: white;
 }
 
 body::after {
@@ -32,34 +32,34 @@ body::after {
     width: 100%;
     height: 20px;
     background-color: #DA4242;
-  }
+}
 
-  body::after {
+body::after {
     bottom: 0;
-  }
+}
 
-  .image {
-	width: 100%;
-	max-width: 150px;
-	height: auto;
-	position: absolute;
-	top: 5px;
-	left: 10%;
-	transform: translateX(-50%);
+.image {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    position: absolute;
+    top: 5px;
+    left: 10%;
+    transform: translateX(-50%);
 }
 
 /*Table*/
 
-.TableHead{
+.TableHead {
     text-align: center;
     height: 30px;
 }
 
-.table-data{
+.table-data {
     font-size: 125%;
     padding: 7%;
     background: #FFFFFF;
-    box-shadow:  rgba(0, 0, 0, 0.25);
+    box-shadow: rgba(0, 0, 0, 0.25);
     border-radius: 25px;
     color: #333333;
 }
@@ -76,7 +76,7 @@ body::after {
     align-items: center;
 }
 
-.grid-item-table{
+.grid-item-table {
     padding: 10%;
     text-align: center;
     justify-content: center;
@@ -105,7 +105,7 @@ body::after {
 
 /*Zoom link box*/
 
-.zoom-link{
+.zoom-link {
     width: 100%;
     padding: 3%;
     background: #FFFFFF;
@@ -121,25 +121,25 @@ body::after {
 
 .button {
     display: flex;
-	padding: 5% 2%;
-	background-color: #FFD700;
-	color: rgb(0, 0, 0);
-	text-align: center;
+    padding: 5% 2%;
+    background-color: #FFD700;
+    color: rgb(0, 0, 0);
+    text-align: center;
     justify-content: center;
-	text-decoration: none;
-	font-size: 16px;
-	border-radius: 100px;
-	transition: background-color 0.3s ease;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 100px;
+    transition: background-color 0.3s ease;
 }
 
 .button:hover {
-	background-color: #f7d563;
+    background-color: #f7d563;
 }
 
 @media screen and (max-width: 600px) {
 
     /*header*/
-    header{
+    header {
         width: 98%;
         background-color: #DA4242;
         padding-bottom: 15%;
@@ -147,26 +147,24 @@ body::after {
         text-align: center;
     }
 
-    head{
+    head {
         width: fit-content;
         text-align: center;
     }
 
-    h2{
+    h2 {
         font-size: 100%;
     }
 
     /*System Status*/
-
-    .TableHead{
+    .TableHead {
         padding-top: 5%;
         padding-bottom: 1%;
         font-size: 140%;
     }
 
     /*Table CSS*/
-
-    table{
+    table {
         width: 100%;
         padding: 5%;
         font-size: larger;
@@ -175,16 +173,15 @@ body::after {
         margin-right: auto;
     }
 
-    .table-data{
+    .table-data {
         padding: 2.5%;
         background: #FFFFFF;
-        box-shadow:  rgba(0, 0, 0, 0.25);
+        box-shadow: rgba(0, 0, 0, 0.25);
         border-radius: 30px;
         color: #333333;
     }
 
     /*Table grid*/
-
     .grid-containertable {
         gap: 5%;
         margin-left: auto;
@@ -198,7 +195,7 @@ body::after {
         text-align: center;
     }
 
-    .grid-item-table{
+    .grid-item-table {
         padding: 3%;
         text-align: center;
         justify-content: center;
@@ -207,7 +204,6 @@ body::after {
     }
 
     /*Button/Zoom grid*/
-
     .grid-container2 {
         margin-left: 7.5%;
         margin-right: 10%;
@@ -216,7 +212,7 @@ body::after {
         display: grid;
         grid-template-columns: 50% 50%;
         align-items: center;
-        }
+    }
 
     .grid-item {
         align-items: center;
@@ -227,7 +223,6 @@ body::after {
     }
 
     /*Button Grid*/
-
     .grid-item:first-child, .grid-item:nth-child(2) {
         width: 100%; /* add width to take up full width of container */
     }
@@ -237,7 +232,6 @@ body::after {
     }
 
     /*Button CSS*/
-
     .button {
         text-align: center;
         margin-left: 20%;
@@ -260,8 +254,7 @@ body::after {
     }
 
     /*Zoom link box*/
-
-    .zoom-link{
+    .zoom-link {
         align-items: center;
         width: 100%;
         padding: 0%;
@@ -272,6 +265,5 @@ body::after {
         word-wrap: break-word;
         text-align: center;
         font-size: 12px;
-        display: block;
     }
 }
