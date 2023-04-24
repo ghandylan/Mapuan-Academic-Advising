@@ -49,6 +49,7 @@ class Student(db.Model, UserMixin):
     queue_order = db.Column(Integer)
     queue_status = db.Column(String(255))
     is_admin = db.Column(Boolean, nullable=False, default=False)
+    sms_sent = db.Column(Boolean, nullable=False, default=False)
 
     queue_ID = db.Column(Integer, ForeignKey('queue.queue_ID'))
     queue = relationship("Queue", backref="students")
@@ -229,15 +230,22 @@ def student_register():
 
     db.session.commit()
 
-    if user_id:
-        if request.method == 'POST':
-            newline = '\n'
-            formatted_number = '+' + user.student_contact_no
+    newline = '\n'
+    formatted_number = '+' + user.student_contact_no
+    # informs the user that they are in the queue. sends the zoom link
+    if user_id and request.method == 'POST':
+        message = f'Hi {user.student_name}, you are now in the queue. Your adviser is {adviser_in_charge}.{newline}Here is your zoom link:{newline}{zoom_link} {newline}Please wait for your turn and do not close the page. {newline}Thank you!'
+        print(message)
+        send_sms_vonage(formatted_number, message)
+        return redirect(url_for('waiting_page'))
 
-            message = f'Hi {user.student_name}, you are now in the queue. Your adviser is {adviser_in_charge}.{newline}Here is your zoom link:{newline}{zoom_link} {newline}Please wait for your turn and do not close the page. {newline}Thank you!'
-
-            send_sms_vonage(formatted_number, message)
-            return redirect(url_for('waiting_page'))
+    # if system detects the that user is ready to be advised
+    if queue_order == 1 and not user.sms_sent:
+        message = f'Dear {user.student_name},{newline}please join the zoom link: {zoom_link}{newline}Your adviser is waiting for you.'
+        print(message)
+        send_sms_vonage(formatted_number, message)
+        user.sms_sent = True
+        db.session.commit()
 
     return jsonify(queue_count=queue_count, queue_order=queue_order, queue_status=queue_status)
 
@@ -296,6 +304,7 @@ def feedback():
         user.queue_order = 0
         user.queue_status = None
         user.queue_ID = None
+        user.sms_sent = False
         db.session.add(student_feedback)
         db.session.commit()
         return redirect(url_for('exit_confirmation'))
@@ -456,6 +465,7 @@ def logout():
         current_user.queue_order = 0
         current_user.queue_status = ""
         current_user.queue_ID = None
+        current_user.sms_sent = False
         db.session.commit()
 
         print(f"Student {current_user.student_name} logged out")
@@ -502,7 +512,7 @@ def send_sms_vonage(to_phone_number, body):
     if response_data["messages"][0]["status"] == "0":
         print("Message sent successfully.")
     else:
-        print(f"Message failed with error: {response_data['messages'][0]['error-text']}")
+        print(f"Error: {response_data['messages'][0]['error-text']}")
 
 
 if __name__ == "__main__":
