@@ -17,3 +17,22 @@ Lara, Charlene Grazielle E. (Documentation)\
 Tayag, Dylan Louis S. (Backend Development)\
 \
 Each contributor played a crucial role in the development of the Mapúan Academic Advising system, bringing their unique skills and expertise to the project.
+
+
+### Pre-requisites
+- Python 3.10 or higher (https://www.python.org/downloads/)
+- XAMPP (https://www.apachefriends.org/download.html)
+- Twilio / Vonage account for SMS integration (https://www.twilio.com/) (https://www.vonage.com/communications-apis/sms/)
+- requirements.txt
+- IDE of your choice (VSCode, PyCharm, IntelliJ, etc.)
+- Database Manager (MySQL Workbench, DBeaver, Datagrip, etc.)
+
+### Setup
+1. Clone the repository
+2. Install the required packages using the command `pip install -r requirements.txt`
+3. Open XAMPP and run MySQL
+4. Open your database manager and create a schema named `mapua` in MySQL
+5. Run the create.sql and insert.sql files in your database manager
+6. Edit the config in main.py to match your database credentials
+7. Run the application using the command `python main.py`
+
