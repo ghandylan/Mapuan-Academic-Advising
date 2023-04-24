@@ -28,7 +28,7 @@ Tayag, Dylan Louis S. (Backend Development)\
 - Database Manager (MySQL Workbench, DBeaver, Datagrip, etc.)
 
 ### Setup
-1. Clone the repository
+1. Clone the repository https://github.com/ghandylan/Mapuan-Academic-Advising/archive/refs/heads/master.zip
 2. Install the required packages using the command `pip install -r requirements.txt`
 3. Open XAMPP and run MySQL
 4. Open your database manager and create a schema named `mapua` in MySQL
