@@ -16,7 +16,7 @@ Inocencio, Zara Naomi S. (Frontend Development)\
 Lara, Charlene Grazielle E. (Documentation)\
 Tayag, Dylan Louis S. (Backend Development)\
 \
-Each contributor played a crucial role in the development of the Mapúan Academic Advising system, bringing their unique skills and expertise to the project.
+***Each contributor played a crucial role in the development of the Mapúan Academic Advising system, bringing their unique skills and expertise to the project.***
 
 
 ### Pre-requisites
