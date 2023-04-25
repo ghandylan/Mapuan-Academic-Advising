@@ -1,5 +1,5 @@
 # Revolutionizing Academic Advising: Mapúan Queue System with SMS Integration
-
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 ### What
 The Mapua Academic Advising is a web-based live queueing application built using Flask and MariaDB dedicated to resolve enrollment concerns of currently enrolled Mapuan students. This includes scheduling concerns, missing requirements, document requests, grade changes, section changes, and more. This is a proposed solution to Mapua's current academic advising during the University's enrolment period. It aims to assist professors and students by incorporating a streamlined and unified queue system to avoid the hassle of opening multiple websites at once. 
 
@@ -28,7 +28,7 @@ Tayag, Dylan Louis S. (Backend Development)\
 - Database Manager (MySQL Workbench, DBeaver, Datagrip, etc.)
 
 ### Setup
-1. Clone the repository
+1. Clone the repository https://github.com/ghandylan/Mapuan-Academic-Advising/archive/refs/heads/master.zip
 2. Install the required packages using the command `pip install -r requirements.txt`
 3. Open XAMPP and run MySQL
 4. Open your database manager and create a schema named `mapua` in MySQL
