@@ -15,8 +15,8 @@ socketio = SocketIO(my_app)
 my_app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/academic_advising'
 my_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 my_app.config['SECRET_KEY'] = 'secret'
-db = SQLAlchemy(my_app)
 my_app.config['SESSION_TYPE'] = 'filesystem'
+db = SQLAlchemy(my_app)
 Session(my_app)
 
 login_manager = LoginManager()
@@ -54,6 +54,15 @@ class Student(db.Model, UserMixin):
     queue_ID = db.Column(Integer, ForeignKey('queue.queue_ID'))
     queue = relationship("Queue", backref="students")
 
+    def is_active(self):
+        return True
+
+    def get_id(self):
+        return self.student_number
+
+    def is_authenticated(self):
+        return True
+
 
 class Admin(db.Model, UserMixin):
     admin_id = db.Column(Integer, primary_key=True, autoincrement=True)
@@ -65,6 +74,15 @@ class Admin(db.Model, UserMixin):
     zoom_link = db.Column(String(255))
     status = db.Column(String(255))
     is_admin = db.Column(Boolean, nullable=False, default=True)
+
+    def is_active(self):
+        return True
+
+    def get_id(self):
+        return self.admin_number
+
+    def is_authenticated(self):
+        return True
 
 
 class Queue(db.Model, UserMixin):
@@ -105,7 +123,6 @@ def login():
             if student:
                 session['user_id'] = student.student_number
                 print(f'Student {student.student_name} has logged in')
-
                 login_user(student, remember=True)
                 # check if student is already in queue
                 queue = Queue.query.filter_by(admin_id=student.queue_ID).first()
@@ -206,15 +223,15 @@ def student_register():
     # informs the user that they are in the queue. sends the zoom link
     if user_id and request.method == 'POST':
         message = f'Hi {user.student_name}, you are now in the queue. Your adviser is {adviser_in_charge}.{newline}{newline}Please wait for your turn and do not close the page. You will receive your SMS once it is you are ready to be advised.{newline}{newline}Thank you!'
-        print(message)
         send_sms_vonage(formatted_number, message)
+        print(message)
         return redirect(url_for('waiting_page'))
 
     # if system detects the that user is ready to be advised
     if queue_order == 1 and not user.sms_sent:
         message = f'Dear {user.student_name},{newline}please join the zoom link: {zoom_link}{newline}Your adviser is waiting for you.'
-        print(message)
         send_sms_vonage(formatted_number, message)
+        print(message)
         user.sms_sent = True
         session['queue_entry_time'] = datetime.now()  # Set the queue entry time to the current time
         db.session.commit()
@@ -257,7 +274,7 @@ def dummy_zoom():
                            queue_order=queue_order, user=user)
 
 
-@my_app.route('/get_queue_status')  # STUDENT VIEW 1 usage in zoom.html and 1 usage in waiting-page.html
+@my_app.route('/get_queue_status')  # STUDENT VIEW 1 usage in zoom.html and 1 usage in waiting-page.html (AJAX)
 def get_queue_status():
     user_id = session.get('user_id')
     user = Student.query.get(user_id)
@@ -318,6 +335,7 @@ def exit_confirmation():
 
 
 @my_app.route('/admin_dashboard', methods=['GET', 'POST'])  # ADMIN VIEW
+@login_required
 def admin_dashboard():
     user_id = session.get('admin_id')
     user = Admin.query.get(user_id)
