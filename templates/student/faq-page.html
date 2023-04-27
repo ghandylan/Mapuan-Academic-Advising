@@ -4,22 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../static/styles/admin/FAQ-Admin.css">
-    <title>Frequently Asked Questions - Admin</title>
-    <script>
-        function enableEditingFAQ() {
-            const editableText = document.getElementById("editFAQ");
-            editableText.contentEditable = true;
-            editableText.focus();
-        }
-    </script>
+    <link rel="stylesheet" href="../../static/styles/student/faq.css">
+    <link rel="icon" type="Acads.png" href="../../static/img/Cardi Icon.png">
+    <title>Frequently Asked Questions</title>
 </head>
 <body>
 <!-- header -->
 <div>
     <header class="header">
         <img src="../../static/img/mymapua.png" alt="My Image" style="max-width: 150px;">
-        <h1>Welcome *admin name,*</h1>
+        <h1>Welcome Juan Dela Cruz!</h1>
         <p>Mapua Academic Advising</p>
     </header>
 </div>
@@ -29,7 +23,7 @@
 </div>
 <br>
 <div class="FAQcontainer">
-    <div class="box1" id="editFAQ">
+    <div class="box1" id="box1">
         <div>
             <div style="text-align: center;">Step-by-step process of academic advising</div>
         </div>
@@ -54,9 +48,8 @@
     <!-- Button Containers  -->
     <div id="button-container">
         <button class="logout" onclick="document.location='index.html'">Log Out</button>
-        <button class="MyStats" onclick="document.location='editzoom-admin.html'">Edit Zoom Links</button>
-        <button class="ReturnQueue" onclick="document.location='livelist-admin.html'">Back To Live list</button>
-        <button class="edit" onclick="enableEditingFAQ()">Edit FAQ</button>
+        <button class="MyStats" onclick="document.location='Zoom.html'">My Status</button>
+        <button class="ReturnQueue" onclick="document.location='Welcome-student.html'">Back To Queue list</button>
     </div>
 </div>
 </body>

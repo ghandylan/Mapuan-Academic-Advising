@@ -105,14 +105,9 @@ class Feedback(db.Model, UserMixin):
     admin = relationship("Admin", backref="feedbacks")
 
 
-class Class(db.Model, UserMixin):
-    class_id = db.Column(Integer, primary_key=True)
-    class_name = db.Column(String(255), nullable=False)
-    class_code = db.Column(String(255), nullable=False)
-    teacher_name = db.Column(String(255), nullable=False)
-    admin_id = db.Column(Integer, ForeignKey('admin.admin_id'), nullable=False)
-
-    admin = relationship("Admin", backref="classes")
+class FAQ(db.Model):
+    type = db.Column(String(255), primary_key=True)
+    content = db.Column(TEXT, nullable=False)
 
 
 @my_app.route('/')  # HOME PAGE
@@ -234,16 +229,16 @@ def student_register():
     formatted_number = '+' + user.student_contact_no
     # informs the user that they are in the queue. sends the zoom link
     if user_id and request.method == 'POST':
-        message = f'Hi {user.student_name}, you are now in the queue. Your adviser is {adviser_in_charge}.{newline}Here is your zoom link:{newline}{zoom_link} {newline}Please wait for your turn and do not close the page. {newline}Thank you!'
+        message = f'Hi {user.student_name}, you are now in the queue. Your adviser is {adviser_in_charge}.{newline}{newline}Please wait for your turn and do not close the page. You will receive your SMS once it is you are ready to be advised.{newline}{newline}Thank you!'
         print(message)
-        send_sms_vonage(formatted_number, message)
+        # send_sms_vonage(formatted_number, message)
         return redirect(url_for('waiting_page'))
 
     # if system detects the that user is ready to be advised
     if queue_order == 1 and not user.sms_sent:
         message = f'Dear {user.student_name},{newline}please join the zoom link: {zoom_link}{newline}Your adviser is waiting for you.'
         print(message)
-        send_sms_vonage(formatted_number, message)
+        # send_sms_vonage(formatted_number, message)
         user.sms_sent = True
         session['queue_entry_time'] = datetime.now()  # Set the queue entry time to the current time
         db.session.commit()
@@ -279,14 +274,14 @@ def dummy_zoom():
     queue_order = user.queue_order
 
     adviser_in_charge = Admin.query.filter_by(admin_id=user.queue_ID).first().admin_name
-    return render_template('student/dummy_zoom.html',
+    return render_template('student/waiting-page.html',
                            adviser_in_charge=adviser_in_charge,
                            queue_count=queue_count,
                            zoom_link=zoom_link,
                            queue_order=queue_order, user=user)
 
 
-@my_app.route('/get_queue_status')  # STUDENT VIEW 1 usage in zoom.html and 1 usage in dummy_zoom.html
+@my_app.route('/get_queue_status')  # STUDENT VIEW 1 usage in zoom.html and 1 usage in waiting-page.html
 def get_queue_status():
     user_id = session.get('user_id')
     user = Student.query.get(user_id)
@@ -333,7 +328,7 @@ def feedback():
 
 @my_app.route('/faq', methods=['GET', 'POST'])  # STUDENT VIEW
 def faq():
-    return render_template('student/FAQ.html')
+    return render_template('student/faq-page.html')
 
 
 @my_app.route('/exit_confirmation', methods=['GET', 'POST'])  # STUDENT VIEW
@@ -344,7 +339,7 @@ def exit_confirmation():
         else:
             return redirect(url_for('logout'))
 
-    return render_template('student/exit_confirmation.html')
+    return render_template('student/exit-confirmation.html')
 
 
 @my_app.route('/admin_dashboard', methods=['GET', 'POST'])  # ADMIN VIEW
@@ -359,7 +354,7 @@ def admin_dashboard():
     if user_id:
         if request.method == 'POST' and request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             # Return the updated data in JSON format
-            return jsonify({'html': render_template('admin/Livelist-admin.html',
+            return jsonify({'html': render_template('admin/livelist.html',
                                                     user=user,
                                                     username=user.admin_name,
                                                     students=students)})
@@ -376,12 +371,7 @@ def admin_dashboard():
             db.session.commit()
             print(student_number)
 
-    return render_template('admin/Livelist-admin.html', user=user, username=user.admin_name, students=students)
-
-
-@my_app.route('/edit_faq', methods=['GET', 'POST'])  # ADMIN VIEW
-def edit_faq():
-    return render_template('admin/FAQ-admin.html')
+    return render_template('admin/livelist.html', user=user, username=user.admin_name, students=students)
 
 
 @my_app.route('/feedback_dashboard', methods=['GET', 'POST'])  # ADMIN VIEW
@@ -399,7 +389,7 @@ def feedback_dashboard():
     feedback_entries.reverse()
 
     feedbacks = Feedback.query.filter_by(admin_id=user_id).all()
-    return render_template('admin/Feedback-admin.html',
+    return render_template('admin/feedback-dashboard.html',
                            user=user,
                            username=user.admin_name,
                            feedbacks=feedbacks,
@@ -431,7 +421,7 @@ def edit_zoom():
 
     admins = Admin.query.all()
 
-    return render_template('admin/editzoom-admin.html',
+    return render_template('admin/editzoom.html',
                            user=user,
                            username=admin_name,
                            zoom_link=zoom_link,

@@ -216,7 +216,7 @@ select {
 
 /*Button CSS*/
 
-.button-out, .button-register, .button-feedback {
+.button-out, .button-register, .button-feedback, .button-faq {
     color: #000000;
     background-color: #FFD700;
     padding: 15px 110px;
