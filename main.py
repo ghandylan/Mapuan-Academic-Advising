@@ -54,15 +54,6 @@ class Student(db.Model, UserMixin):
     queue_ID = db.Column(Integer, ForeignKey('queue.queue_ID'))
     queue = relationship("Queue", backref="students")
 
-    def is_active(self):
-        return True
-
-    def get_id(self):
-        return self.student_number
-
-    def is_authenticated(self):
-        return True
-
 
 class Admin(db.Model, UserMixin):
     admin_id = db.Column(Integer, primary_key=True, autoincrement=True)
@@ -74,15 +65,6 @@ class Admin(db.Model, UserMixin):
     zoom_link = db.Column(String(255))
     status = db.Column(String(255))
     is_admin = db.Column(Boolean, nullable=False, default=True)
-
-    def is_active(self):
-        return True
-
-    def get_id(self):
-        return self.admin_number
-
-    def is_authenticated(self):
-        return True
 
 
 class Queue(db.Model, UserMixin):
@@ -105,11 +87,6 @@ class Feedback(db.Model, UserMixin):
     admin = relationship("Admin", backref="feedbacks")
 
 
-class FAQ(db.Model):
-    type = db.Column(String(255), primary_key=True)
-    content = db.Column(TEXT, nullable=False)
-
-
 @my_app.route('/')  # HOME PAGE
 def index():
     return redirect(url_for('login'))
@@ -130,7 +107,7 @@ def login():
                 print(f'Student {student.student_name} has logged in')
 
                 login_user(student, remember=True)
-                # check is studeent is already in queue
+                # check if student is already in queue
                 queue = Queue.query.filter_by(admin_id=student.queue_ID).first()
                 if queue:
                     return redirect(url_for('waiting_page'))
@@ -160,7 +137,6 @@ def student_dashboard():
     # check if user is logged in
     user_id = session.get('user_id')
     if user_id:
-
         user = Student.query.get(user_id)
         # count the number of students with the Queue_ID 1
         queue_count = Queue.query.filter_by(admin_id=user_id).count()
@@ -231,14 +207,14 @@ def student_register():
     if user_id and request.method == 'POST':
         message = f'Hi {user.student_name}, you are now in the queue. Your adviser is {adviser_in_charge}.{newline}{newline}Please wait for your turn and do not close the page. You will receive your SMS once it is you are ready to be advised.{newline}{newline}Thank you!'
         print(message)
-        # send_sms_vonage(formatted_number, message)
+        send_sms_vonage(formatted_number, message)
         return redirect(url_for('waiting_page'))
 
     # if system detects the that user is ready to be advised
     if queue_order == 1 and not user.sms_sent:
         message = f'Dear {user.student_name},{newline}please join the zoom link: {zoom_link}{newline}Your adviser is waiting for you.'
         print(message)
-        # send_sms_vonage(formatted_number, message)
+        send_sms_vonage(formatted_number, message)
         user.sms_sent = True
         session['queue_entry_time'] = datetime.now()  # Set the queue entry time to the current time
         db.session.commit()
@@ -265,7 +241,7 @@ def waiting_page():
                            zoom_link=zoom_link)
 
 
-@my_app.route('/dummy_zoom')  # STUDENT VIEW
+@my_app.route('/waiting-page')  # STUDENT VIEW
 def dummy_zoom():
     user_id = session.get('user_id')
     user = Student.query.get(user_id)
@@ -322,7 +298,6 @@ def feedback():
         return redirect(url_for('exit_confirmation'))
 
     #     if user wants to log out
-
     return render_template('student/feedback.html')
 
 
@@ -371,7 +346,10 @@ def admin_dashboard():
             db.session.commit()
             print(student_number)
 
-    return render_template('admin/livelist.html', user=user, username=user.admin_name, students=students)
+    return render_template('admin/livelist.html',
+                           user=user,
+                           username=user.admin_name,
+                           students=students)
 
 
 @my_app.route('/feedback_dashboard', methods=['GET', 'POST'])  # ADMIN VIEW
