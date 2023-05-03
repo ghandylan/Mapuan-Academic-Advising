@@ -75,5 +75,48 @@
         </form>
     </div>
 </div>
+
+<a href="#" id="faq-button">
+    <img class="widget-button" src="../static/img/faq.png" alt="Clickable Widget Button">
+</a>
+
+<div id="popup">
+    <h2>FAQ</h2>
+    <p>
+    <div>
+        <center>Step-by-step process of academic advising</center>
+    </div>
+    <br>The Mapuan academic advising is a web application dedicated to resolving enrollment concerns of currently
+    enrolled Mapuan students. This includes scheduling concerns, missing requirements, document requests, grade changes,
+    section changes, and more.
+    <br>
+    <br>1. Log in to the Mapuan Advising website using your MyMapua e-mail address and password
+    <br>
+    <br>2. Select which professor you choose to resolve your problem (You may also see their queue line).
+    <br>
+    <br>3. After selecting the professor, fill out the details on the advising request form.
+    <br>
+    <br>4. There would be an SMS confirmation sent to your mobile phone.
+    <br>
+    <br>5. Patiently wait for your turn for the academic advising.
+    <br>
+    <br>6. When it’s your turn, click the Zoom link to be redirected to the Zoom meeting of the assigned professor.
+    <br>
+    <br>7. After your academic advising, give us feedback on your experience using the website.</p>
+    <button id="close-button">Close</button>
+</div>
 </body>
+<script>
+    const faqButton = document.querySelector('#faq-button');
+    const popup = document.querySelector('#popup');
+    const closeButton = document.querySelector('#close-button');
+
+    faqButton.addEventListener('click', function () {
+        popup.style.display = 'block';
+    });
+
+    closeButton.addEventListener('click', function () {
+        popup.style.display = 'none';
+    });
+</script>
 </html>

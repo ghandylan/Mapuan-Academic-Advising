@@ -1,38 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-us">
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../static/styles/student/enqueue.css">
+    <title>Queueing List</title>
+    <link rel="stylesheet" type="text/css" href="../../static/styles/student/enqueue.css">
     <link rel="icon" type="Acads.png" href="../../static/img/Cardi Icon.png">
-    <title>Admin List</title>
-    <script>
-        const logoutUrl = "{{ url_for('logout') }}";
-
-        function logout() {
-            if (confirm('Are you sure you want to logout?')) {
-                window.location.href = logoutUrl;
-            }
-        }
-
-        function validateForm() {
-            const radios = document.getElementsByName('admin_id');
-            let checked = false;
-            for (let i = 0; i < radios.length; i++) {
-                if (radios[i].checked) {
-                    checked = true;
-                    break;
-                }
-            }
-            if (!checked) {
-                alert('Please select an admin.');
-                return false;
-            }
-            return true;
-        }
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
@@ -43,6 +17,32 @@
         <p>Mapua Academic Advising</p>
     </header>
 </div>
+
+<script>
+    const logoutUrl = "{{ url_for('logout') }}";
+
+    function logout() {
+        if (confirm('Are you sure you want to logout?')) {
+            window.location.href = logoutUrl;
+        }
+    }
+
+    function validateForm() {
+        const radios = document.getElementsByName('admin_id');
+        let checked = false;
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                checked = true;
+                break;
+            }
+        }
+        if (!checked) {
+            alert('Please select an admin.');
+            return false;
+        }
+        return true;
+    }
+</script>
 
 <h1>Admin List</h1>
 <form action="/student_dashboard" method="post" onsubmit="return validateForm();">
@@ -56,7 +56,8 @@
             <th>Select</th>
         </tr>
         </thead>
-
+        <br>
+        <br>
         <tbody>
         {% for admin in admins %}
             <tr {% if admin.status == 'Offline' %}class="disabled"{% endif %}>
@@ -69,6 +70,8 @@
         </tbody>
     </table>
 
+    <!-- form fields and table -->
+
     <div id="button-container">
         <a href="#" onclick="logout()">
             <button class="logout">Log Out</button>
@@ -79,3 +82,4 @@
 </body>
 
 </html>
+

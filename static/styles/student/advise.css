@@ -1,238 +1,286 @@
 body {
-	margin: 0;
-	padding: 0;
-	font-family: Georgia, serif;
-	background-color: #333333;
-	color: white;
-	font-size: 16px;
+    margin: 0;
+    padding: 0;
+    font-family: Georgia, serif;
+    background-color: #333333;
+    color: white;
+    font-size: 16px;
 }
 
 header {
-	background-color: #DA4242;
-	padding: 20px;
-	text-align: center;
-	position: relative;
+    background-color: #DA4242;
+    padding: 20px;
+    text-align: center;
+    position: relative;
 }
 
 header::after {
-	content: '';
-	position: absolute;
-	bottom: 15px;
-	left: -0.1%; /* Adjust this value to move the line to the right or left */
-	width: 100%;
-	height: 15px;
-	background-color: #FFD700;
+    content: '';
+    position: absolute;
+    bottom: 15px;
+    left: -0.1%; /* Adjust this value to move the line to the right or left */
+    width: 100%;
+    height: 15px;
+    background-color: #FFD700;
 }
 
 form {
-	max-width: 100%;
-	margin: 1%;
-	padding: 5%;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
+    max-width: 100%;
+    margin: 1%;
+    padding: 5%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 body::after {
-  content: '';
-  display: block;
-  position: fixed;
-  width: 100%;
-  height: 20px;
-  background-color: #DA4242;
+    content: '';
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 20px;
+    background-color: #DA4242;
 }
 
 body::after {
-  bottom: 0;
+    bottom: 0;
 }
 
 .image {
-	width: 100%;
-	max-width: 150px;
-	height: auto;
-	position: absolute;
-	top: 5px;
-	left: 10%;
-	transform: translateX(-50%);
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    position: absolute;
+    top: 5px;
+    left: 10%;
+    transform: translateX(-50%);
 }
 
 .left {
-	flex: 1;
-	margin-right: 5%;
+    flex: 1;
+    margin-right: 5%;
 }
 
 .left label {
-	font-weight: bold;
-	margin-bottom: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .left input[type="text"] {
-	width: 100%;
-	padding: 10px;
-	border: 2px solid #000000;
-	border-radius: 14px;
-	background-color: #eee;
-	font-size: 1.5rem;
-	margin-bottom: 50px;
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #000000;
+    border-radius: 14px;
+    background-color: #eee;
+    font-size: 1.5rem;
+    margin-bottom: 50px;
 }
 
 .right {
-	flex: 1;
-	margin-left: 5%;
+    flex: 1;
+    margin-left: 5%;
 }
 
 .right label {
-	font-weight: bold;
-	margin-bottom: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
 }
 
 .right textarea {
-	width: 96%;
-	height: 115px;
-	margin-bottom: 4%;
-	padding: 10px;
-	border: 2px solid #000000;
-	border-radius: 14px;
-	background-color: #eee;
-	font-size: 1.5rem;
+    width: 96%;
+    height: 115px;
+    margin-bottom: 4%;
+    padding: 10px;
+    border: 2px solid #000000;
+    border-radius: 14px;
+    background-color: #eee;
+    font-size: 1.5rem;
 }
 
 select {
-	font-size: 1.5rem;
-	padding: 10px;
-	border: 2px solid #000000;
-	border-radius: 14px;
-	background-color: #eee;
-	color: #333333;
-	width: 100%;
-	margin-bottom: 40px;
+    font-size: 1.5rem;
+    padding: 10px;
+    border: 2px solid #000000;
+    border-radius: 14px;
+    background-color: #eee;
+    color: #333333;
+    width: 100%;
+    margin-bottom: 40px;
 }
 
-	option {
-	font-size: 1.5rem;
-	background-color: #eee;
-	color: #333333;
+option {
+    font-size: 1.5rem;
+    background-color: #eee;
+    color: #333333;
 }
 
 .right input[type="Logout"] {
-	padding: 9px;
-	border: none;
-	border-radius: 500px;
-	background-color: #FFD700;
-	color: rgb(0, 0, 0);
-	font-family: Georgia, serif;
-	font-size: 1.5rem;
-	margin: 20px auto 20px;
-	width: 50%;
-	display: block;
-	text-align: center;
-	transition: background-color 0.3s ease; /* add transition effect */
+    padding: 9px;
+    border: none;
+    border-radius: 500px;
+    background-color: #FFD700;
+    color: rgb(0, 0, 0);
+    font-family: Georgia, serif;
+    font-size: 1.5rem;
+    margin: 20px auto 20px;
+    width: 50%;
+    display: block;
+    text-align: center;
+    transition: background-color 0.3s ease; /* add transition effect */
 }
 
 .right input[type="Logout"]:hover {
-	background-color: #f3ee92; /* change background color on hover */
-	cursor: pointer; /* add pointer cursor on hover */
+    background-color: #f3ee92; /* change background color on hover */
+    cursor: pointer; /* add pointer cursor on hover */
 }
 
 .button-container {
-	display: flex;
-	justify-content: space-evenly;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .button {
-	display: inline-block;
-	padding: 10px 90px;
-	background-color: #FFD700;
-	color: rgb(0, 0, 0);
-	text-align: center;
-	text-decoration: none;
-	font-family: Georgia, serif;
-	font-size: 1.5rem;
-	border-radius: 500px;
-	transition: background-color 0.3s ease; /* add transition effect */
+    display: inline-block;
+    padding: 10px 90px;
+    background-color: #FFD700;
+    color: rgb(0, 0, 0);
+    text-align: center;
+    text-decoration: none;
+    font-family: Georgia, serif;
+    font-size: 1.5rem;
+    border-radius: 500px;
+    transition: background-color 0.3s ease; /* add transition effect */
 }
 
 .button:hover {
-	background-color: #f3ee92; /* change background color on hover */
-	cursor: pointer; /* add pointer cursor on hover */
+    background-color: #f3ee92; /* change background color on hover */
+    cursor: pointer; /* add pointer cursor on hover */
 }
+
+.widget-button {
+    position: fixed;
+    bottom: 77%;
+    right: 20px;
+    padding: 10px;
+    cursor: pointer;
+    width: 80px; /* change this to your desired width */
+    height: 80px; /* change this to your desired height */
+    margin-bottom: -30px;
+}
+
+#popup {
+    display: none;
+    position: fixed;
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 50px;
+    background-color: #DA4242;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+#close-button {
+    position: fixed;
+    top: 93%;
+    right: 1px;
+    margin: 0 20px;
+    color: #000000;
+    background-color: #FFD700;
+    padding: 10px 40px;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+}
+
+
+h2 {
+    color: rgb(255, 255, 255);
+}
+
 
 /* Media queries */
 @media screen and (max-width: 1000px) {
-	form {
-		padding: 6%;
-	}
+    form {
+        padding: 6%;
+    }
 
-	.left,
-	.right {
-		flex-basis: 100%;
-	}
+    .left,
+    .right {
+        flex-basis: 100%;
+    }
 
-	.left input[type="text"],
-	.right textarea {
-		width: 93%;
-	}
+    .left input[type="text"],
+    .right textarea {
+        width: 93%;
+    }
 
-	.right input[type="reset"],
-	.button {
-		margin: 100px auto 10p;
-		display: block;
-		width: 300%;
-	}
+    .right input[type="reset"],
+    .button {
+        margin: 100px auto 10 p;
+        display: block;
+        width: 300%;
+    }
 
-	select {
-		font-size: 2rem;
-		padding: 15px;
-		margin-bottom: 40px;
-	}
+    select {
+        font-size: 2rem;
+        padding: 15px;
+        margin-bottom: 40px;
+    }
 
-	select option {
-		font-size: 1rem;
-	}
+    select option {
+        font-size: 1rem;
+    }
 
-		.button {
-		padding: 30px;
-	}
+    .button {
+        padding: 30px;
+    }
 
 }
 
 @media screen and (max-width: 1000px) {
-	form {
-		padding: 6%;
+    form {
+        padding: 6%;
 
-	}
+    }
 
-	.left,
-	.right {
-		margin: 0;
-		flex-basis: 90%;
-	}
+    .left,
+    .right {
+        margin: 0;
+        flex-basis: 90%;
+    }
 
-	.left label,
-	.right label {
-		font-size: 2.0rem;
-		margin-bottom: 10px;
-	}
+    .left label,
+    .right label {
+        font-size: 2.0rem;
+        margin-bottom: 10px;
+    }
 
-	.left input[type="text"],
-	.right textarea,
-	.right input[type="reset"],
-	.button {
-		font-size: 2.0rem;
-		padding: 30px;
-		margin-bottom: 100px;
-	}
+    .left input[type="text"],
+    .right textarea,
+    .right input[type="reset"],
+    .button {
+        font-size: 2.0rem;
+        padding: 30px;
+        margin-bottom: 100px;
+    }
 
-	.right textarea {
-		height: 150px;
-	}
+    .right textarea {
+        height: 150px;
+    }
 
-	.right input[type="reset"] {
-		width: 60%;
-		margin-bottom: -5%;
-	}
+    .right input[type="reset"] {
+        width: 60%;
+        margin-bottom: -5%;
+    }
 
-	.button {
-		padding: 30px;
-	}
+    .button {
+        padding: 30px;
+    }
 }

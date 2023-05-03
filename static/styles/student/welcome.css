@@ -5,70 +5,75 @@
     font-family: Georgia, serif;
 }
 
-body {
-    height: 100%;
+.topheader{
+    width: 100%;
+    height: 120px;
+    display: block;
 }
 
+.headergap{
+    margin-top: 150px;
+}
+
+/* Styles */
+
 body {
+    width: 100%;
     background-color: #333333;
-    display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.container {
-    flex: 1;
-    max-width: 1800px;
-    margin: 0 auto;
-    padding: 20px;
+body::after {
+    content: '';
+    display: block;
+    position: fixed;
+    width: 100%;
+    height: 20px;
+    background-color: #DA4242;
 }
 
 body::after {
-	content: '';
-	display: block;
-	position: fixed;
-	width: 100%;
-	height: 20px;
-	background-color: #DA4242;
-  }
+    bottom: 0;
+}
 
-  body::after {
-	bottom: 0;
-  }
+/* Header CSS */
 
-/* Header Styles */
 .header {
-	background-color: #DA4242;
-	padding: 20px;
-	text-align: center;
-	margin: 0;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-  }
+    width: 100%;
+    background-color: #DA4242;
+    padding-top: 1%;
+    padding-bottom: 2%;
+    text-align: center;
+    margin: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
 
-/* CSS styles for the logo */
+/*logo CSS*/
+
 .header img {
-	width: 100%;
-	max-width: 150px;
-	height: auto;
-	position: absolute;
-	top: 5px;
-	left: 10%;
-	transform: translateX(-50%);
-	z-index: 1; /* Set a lower z-index value */
-  }
+    width: 100%;
+    max-width: 150px;
+    height: 90%;
+    position: absolute;
+    top: 10px;
+    left: 10%;
+    transform: translateX(-50%);
+    z-index: 1; /* Set a lower z-index value */
+}
 
 .header::after {
-	content: '';
-	position: absolute;
-	bottom: 15px;
-	left: -0.1%; /* Adjust this value to move the line to the right or left */
-	width: 101%;
-	height: 15px;
-	background-color: #FFD700;
-	z-index: 0; /* Set a higher z-index value */
+    content: '';
+    position: absolute;
+    bottom: 15px;
+    left: -0.1%; /* Adjust this value to move the line to the right or left */
+    width: 101%;
+    height: 15px;
+    background-color: #FFD700;
+    z-index: 0; /* Set a higher z-index value */
 }
 
 .header h1 {
@@ -83,143 +88,126 @@ body::after {
     margin-bottom: 10px;
 }
 
-/* Queueing List Styles */
-.queueing-list {
-    margin-bottom: 30px;
-    background-color: #c6c6c6;
-    padding: 80px;
-    border-radius: 5px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+h1 {
     text-align: center;
-    color: #333;
-    margin-top: 130px; /* Add this property to create space */
+    color: #fff;
 }
 
-h2 {
-    font-size: 36px;
-    margin-bottom: 20px;
-    color: #DA4242;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-weight: 700;
-    margin-top: 0;
+/*Table CSS*/
+
+table {
+    width: 95%;
+    margin: auto;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
-.list {
-    height: 300px;
-    overflow-y: scroll;
-    padding: 1px;
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+    background-color: #fff;
 }
 
-/* CSS for the list items */
-.list-item {
-    margin-bottom: 10px;
-    padding: 15px;
-    background-color: #ffffff;
-    border-radius: 14px;
-    box-shadow: 0px 2px 2px rgba(216, 140, 140, 0.1);
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-
+th {
+    background-color: #BEBEBE;
+    text-align: center;
 }
 
-/* CSS for the column headers */
-.column-header {
-    font-weight: bold;
-    border: 1px solid black;
-    border-radius: 14px;
+tbody tr:hover {
+    background-color: #f9f9f9;
+}
+
+input[type="radio"] {
+    margin: 0;
+    vertical-align: middle;
+}
+
+.widget-button {
+    position: fixed;
+    bottom: 77%;
+    right: 20px;
     padding: 10px;
-    flex-basis: 20%;
+    cursor: pointer;
+    width: 90px; /* change this to your desired width */
+    height: 90px; /* change this to your desired height */
+    margin-bottom: -30px;
 }
 
-/* CSS for the column values */
-.column-value {
+  #popup {
+    display: none;
+    position: fixed;
+    font-size: 19px; color: rgb(255, 255, 255);
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 50px;
+    background-color: #DA4242;
     border: 1px solid black;
-    border-radius: 14px;
-    padding: 10px;
-    flex-basis: 20%;
-}
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1;
+  }
 
-/* CSS for the Log Out button */
-/* CSS for the Register button */
-
-#button-container {
-    display: flex;
-    justify-content: space-between;
-}
-.button-out {
+  #close-button {
+    position: fixed;
+    top: 93%;
+    right: 1px;
+    margin: 0 20px;
     color: #000000;
     background-color: #FFD700;
-    padding: 15px 110px;
+    padding: 10px 40px;
     border: none;
-    border-radius: 500px;
+    border-radius: 25px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 1px;
+    transition: background-color 0.3s ease-in-out;
+  }
+
+
+h2{
+    color: rgb(255, 255, 255);
+}
+
+/*Buttons CSS*/
+#button-container{
+    justify-content: center; /* Center the buttons horizontally */
+    display: flex;
+    height: 120px;
+    align-items: center;
+    text-align: center;
+}
+
+input[type="submit"] {
+    margin: 0 20px;
+    color: #000000;
+    background-color: #FFD700;
+    padding: 15px 50px;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
     transition: background-color 0.3s ease-in-out;
 }
 
-.button-out:hover {
-    background-color: #f7d563;
-}
-
-/* CSS for the Register button */
-.button-register {
+.logout{
+    margin: 0 20px;
     color: #000000;
     background-color: #FFD700;
-    padding: 15px 110px;
+    padding: 15px 50px;
     border: none;
-    border-radius: 500px;
+    border-radius: 25px;
     font-weight: bold;
     cursor: pointer;
-    margin-top: 1px;
     transition: background-color 0.3s ease-in-out;
 }
 
-.button-register:hover {
+/*Button hover CSS*/
+input[type="submit"]:hover {
     background-color: #f7d563;
 }
 
-/* Media Query for smaller screens */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-
-    .header h1 {
-        font-size: 24px;
-    }
-
-    .header p {
-        font-size: 14px;
-    }
-
-    .header img {
-		max-width: 100px;
-		left: 13%;
-        z-index: -1;
-	}
-
-    .queueing-list {
-        padding: 30px;
-    }
-
-    .list-item {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .column-header, .column-value {
-        flex-basis: 50%;
-    }
-
-    #button-container {
-        flex-direction: column;
-    }
-
-    .button-out, .button-register {
-        padding: 10px 30px;
-        margin: 5px 0;
-    }
+.logout:hover{
+    background-color: #f7d563;
 }
+
