@@ -3,8 +3,11 @@
   <component name="Flask">
     <option name="enabled" value="true" />
   </component>
-  <component name="NewModuleRootManager">
-    <content url="file://$MODULE_DIR$" />
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="bootstrap" level="application" />

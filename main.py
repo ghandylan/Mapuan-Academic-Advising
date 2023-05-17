@@ -1,27 +1,25 @@
-import os
-import vonage  # sms API
-
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from datetime import datetime
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session, flash
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import *
 from flask_login import *
-from sqlalchemy.orm import *  # object relational mapper
-from twilio.rest import Client  # sms API
-from flask_socketio import SocketIO  # live update
+from sqlalchemy import *
+from sqlalchemy.orm import *
+from models import *
+from sms import send_sms_vonage
 
 my_app = Flask(__name__, template_folder='templates', static_folder='static')
-socketio = SocketIO(my_app)
+
 my_app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/academic_advising'
 my_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 my_app.config['SECRET_KEY'] = 'secret'
 my_app.config['SESSION_TYPE'] = 'filesystem'
-db = SQLAlchemy(my_app)
-Session(my_app)
 
 login_manager = LoginManager()
 login_manager.login_view = '/login'
 login_manager.init_app(my_app)
+
+db = SQLAlchemy(my_app)
+db.init_app(my_app)
+Session(my_app)
 
 
 @login_manager.user_loader
@@ -34,75 +32,6 @@ def load_user(user_id):
         return admin
     else:
         return None
-
-
-class Student(db.Model, UserMixin):
-    student_number = db.Column(String(10), primary_key=True)
-    student_email = db.Column(String(255), nullable=False)
-    student_password = db.Column(String(255), nullable=False)
-    student_name = db.Column(String(255), nullable=False)
-    student_contact_no = db.Column(String(255), nullable=False)
-    student_program = db.Column(String(255), nullable=False)
-    student_year = db.Column(String(255), nullable=False)
-    student_concern = db.Column(String(255))
-    student_additional_comment = db.Column(String(255))
-    queue_order = db.Column(Integer)
-    queue_status = db.Column(String(255))
-    is_admin = db.Column(Boolean, nullable=False, default=False)
-    sms_sent = db.Column(Boolean, nullable=False, default=False)
-
-    queue_ID = db.Column(Integer, ForeignKey('queue.queue_ID'))
-    queue = relationship("Queue", backref="students")
-
-    def is_active(self):
-        return True
-
-    def get_id(self):
-        return self.student_number
-
-    def is_authenticated(self):
-        return True
-
-
-class Admin(db.Model, UserMixin):
-    admin_id = db.Column(Integer, primary_key=True, autoincrement=True)
-    admin_number = db.Column(String(10))
-    admin_email = db.Column(String(255), nullable=False)
-    admin_password = db.Column(String(255), nullable=False)
-    admin_name = db.Column(String(255), nullable=False)
-    available = db.Column(Boolean, nullable=False, default=True)
-    zoom_link = db.Column(String(255))
-    status = db.Column(String(255))
-    is_admin = db.Column(Boolean, nullable=False, default=True)
-
-    def is_active(self):
-        return True
-
-    def get_id(self):
-        return self.admin_number
-
-    def is_authenticated(self):
-        return True
-
-
-class Queue(db.Model, UserMixin):
-    queue_ID = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    admin_id = db.Column(db.Integer, db.ForeignKey('admin.admin_id'), nullable=False)
-    queue_status = db.Column(db.String(255), nullable=False)
-
-    admin = relationship("Admin", backref="queues")
-
-
-class Feedback(db.Model, UserMixin):
-    feedback_id = db.Column(Integer, primary_key=True, autoincrement=True)
-    feedback = db.Column(String(255), nullable=False)
-    student_number = db.Column(String(10), ForeignKey('student.student_number'), nullable=False)
-    rating = db.Column(String(255), nullable=False)
-    admin_id = db.Column(Integer, ForeignKey('admin.admin_id'), nullable=False)
-    date = db.Column(String(255), nullable=False)
-
-    student = relationship("Student", backref="feedbacks")
-    admin = relationship("Admin", backref="feedbacks")
 
 
 @my_app.route('/')  # HOME PAGE
@@ -240,6 +169,7 @@ def student_register():
 
 
 @my_app.route('/waiting_page', methods=['GET', 'POST'])  # STUDENT VIEW
+@login_required
 def waiting_page():
     user_id = session.get('user_id')
     user = Student.query.get(user_id)
@@ -259,6 +189,7 @@ def waiting_page():
 
 
 @my_app.route('/waiting-page')  # STUDENT VIEW
+@login_required
 def dummy_zoom():
     user_id = session.get('user_id')
     user = Student.query.get(user_id)
@@ -275,6 +206,7 @@ def dummy_zoom():
 
 
 @my_app.route('/get_queue_status')  # STUDENT VIEW 1 usage in zoom.html and 1 usage in waiting-page.html (AJAX)
+@login_required
 def get_queue_status():
     user_id = session.get('user_id')
     user = Student.query.get(user_id)
@@ -319,11 +251,13 @@ def feedback():
 
 
 @my_app.route('/faq', methods=['GET', 'POST'])  # STUDENT VIEW
+@login_required
 def faq():
     return render_template('student/faq-page.html')
 
 
 @my_app.route('/exit_confirmation', methods=['GET', 'POST'])  # STUDENT VIEW
+@login_required
 def exit_confirmation():
     if request.method == 'POST':
         if 'Yes' in request.form:
@@ -371,6 +305,7 @@ def admin_dashboard():
 
 
 @my_app.route('/feedback_dashboard', methods=['GET', 'POST'])  # ADMIN VIEW
+@login_required
 def feedback_dashboard():
     user_id = session.get('admin_id')
     user = Admin.query.get(user_id)
@@ -398,6 +333,7 @@ def feedback_dashboard():
 
 
 @my_app.route('/update_zoom_link', methods=['POST'])  # ADMIN VIEW
+@login_required
 def update_zoom_link():
     zoom_link = request.form['zoomLink']
     user_id = session.get('admin_id')
@@ -408,6 +344,7 @@ def update_zoom_link():
 
 
 @my_app.route('/edit_zoom')  # ADMIN VIEW
+@login_required
 def edit_zoom():
     user_id = session.get('admin_id')
     user = Admin.query.get(user_id)
@@ -426,6 +363,7 @@ def edit_zoom():
 
 
 @my_app.route('/logout_warning', methods=['GET', 'POST'])  # ADMIN VIEW
+@login_required
 def logout_warning():
     if request.method == 'POST':
         if request.form['warning'] == 'return':
@@ -471,44 +409,9 @@ def logout():
     return redirect(url_for('login_page'))
 
 
-def sens_sms_twilio(to_phone_number, body):
-    # Replace with your Twilio account SID and auth token
-    account_sid = os.environ.get('TWILIO_ACCOUNT_SID')
-    auth_token = os.environ.get('TWILIO_AUTH_TOKEN')
 
-    # Replace with your Twilio phone number and recipient phone number
-    from_phone_number = os.environ.get('TWILIO_FROM_PHONE_NUMBER')
-    # to_phone_number = '+639616220682'
-
-    # Create a Twilio client
-    client = Client(account_sid, auth_token)
-
-    message = client.messages.create(body=body,
-                                     from_=from_phone_number,
-                                     to=to_phone_number)
-
-    # Return a response to the user
-    return f'SMS message sent to {to_phone_number}: {message.sid}'
-
-
-def send_sms_vonage(to_phone_number, body):
-    client = vonage.Client(key=os.environ.get('VONAGE_API_KEY'), secret=os.environ.get('VONAGE_API_SECRET'))
-    sms = vonage.Sms(client)
-
-    response_data = sms.send_message(
-        {
-            "from": "Vonage APIs",
-            "to": to_phone_number,
-            "text": body
-        }
-    )
-
-    if response_data["messages"][0]["status"] == "0":
-        print("Message sent successfully.")
-    else:
-        print(f"Error: {response_data['messages'][0]['error-text']}")
 
 
 if __name__ == "__main__":
-    socketio.run(my_app, debug=True, allow_unsafe_werkzeug=True)
+    my_app.run(debug=True)
     db.create_all()
