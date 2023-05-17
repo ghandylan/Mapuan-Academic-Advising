@@ -1,12 +1,7 @@
-# ignore pycache
 global-exclude __pycache__
-# ignore .idea folder
 global-exclude .idea
 *.pyc
 .idea/academic_advising_v2.iml
 .idea/jpa-buddy.xml
 .idea/misc.xml
 __pycache__/main.cpython-310.pyc
-__pycache__/main.cpython-310.pyc
-.idea/academic_advising_v2.iml
-.idea/misc.xml
