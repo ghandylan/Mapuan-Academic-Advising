@@ -1,2 +1,4 @@
 # ignore pycache
 global-exclude __pycache__
+# ignore .idea folder
+global-exclude .idea
