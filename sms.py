@@ -2,7 +2,7 @@ import vonage
 
 
 def send_sms_vonage(to_phone_number, body):
-    client = vonage.Client(key='e96a6627', secret='FjUsE1elQrobT0Hz')
+    client = vonage.Client(key='haha', secret='haha')
     sms = vonage.Sms(client)
 
     response_data = sms.send_message(
