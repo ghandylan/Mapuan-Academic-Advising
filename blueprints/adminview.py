@@ -2,10 +2,10 @@ from flask import Blueprint, request, jsonify, render_template, redirect, url_fo
 from flask_login import current_user, login_required
 from sqlalchemy import asc
 
-from main import db
 from models import Admin, Student, Feedback
 
 adminview = Blueprint('adminview', __name__)
+
 
 @adminview.route('/admin_dashboard', methods=['GET', 'POST'])  # ADMIN VIEW
 @login_required
