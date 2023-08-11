@@ -1,8 +1,9 @@
-from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
-from main import db
+from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import ForeignKey, Integer, String, Boolean
 from sqlalchemy.orm import relationship
+
+db = SQLAlchemy()
 
 
 class Student(db.Model, UserMixin):
