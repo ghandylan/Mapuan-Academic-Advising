@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify, render_template, redirect, url_fo
 from flask_login import current_user, login_required
 from sqlalchemy import asc
 
-from models import Admin, Student, Feedback
+from models import db, Admin, Student, Feedback
 
 adminview = Blueprint('adminview', __name__)
 
@@ -79,7 +79,7 @@ def update_zoom_link():
     user = Admin.query.get(user_id)
     user.zoom_link = zoom_link
     db.session.commit()
-    return redirect(url_for('edit_zoom'))
+    return redirect(url_for('adminview.edit_zoom'))
 
 
 @adminview.route('/edit_zoom')  # ADMIN VIEW
@@ -106,6 +106,6 @@ def edit_zoom():
 def logout_warning():
     if request.method == 'POST':
         if request.form['warning'] == 'return':
-            return redirect(url_for('admin_dashboard'))
+            return redirect(url_for('adminview.admin_dashboard'))
 
     return render_template('admin/logout-warning.html')

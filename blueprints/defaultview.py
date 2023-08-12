@@ -28,22 +28,22 @@ def login():
                 # check if student is already in queue
                 queue = Queue.query.filter_by(admin_id=student.queue_ID).first()
                 if queue:
-                    return redirect(url_for('waiting_page'))
+                    return redirect(url_for('studentview.waiting_page'))
                 else:
-                    return redirect(url_for('student_dashboard'))
+                    return redirect(url_for('studentview.student_dashboard'))
             elif admin:
                 login_user(admin, remember=True)
                 admin.status = 'Online'
                 db.session.commit()
                 print(f'Admin {admin.admin_name} has logged in')
                 print(f'Admin {admin.admin_name} is online')
-                return redirect(url_for('admin_dashboard'))
+                return redirect(url_for('adminview.admin_dashboard'))
             else:
                 flash('Invalid email or password', 'warning')
                 return redirect(url_for('defaultview.login', error='Invalid email or password'))
         else:
             flash('Email and password are required', 'error')
-            return redirect(url_for('login_page', error='Email and password are required'))
+            return redirect(url_for('defaultview.login_page', error='Email and password are required'))
 
     return render_template('login.html')
 
@@ -82,4 +82,4 @@ def logout():
     logout_user()
 
     flash('Logged out successfully', 'success')
-    return redirect(url_for('default_view.login_page'))
+    return redirect(url_for('defaultview.login_page'))

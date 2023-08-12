@@ -9,7 +9,7 @@
 
     <title>Edit Dashboard</title>
     <script>
-        const logoutUrl = "{{ url_for('logout') }}";
+        const logoutUrl = "{{ url_for('defaultview.logout') }}";
         
         function logout() {
             if (confirm('Are you sure you want to logout?')) {
@@ -71,7 +71,7 @@
                                 {{ admin.admin_name }}{% if admin.admin_name == username %} <b>(You)</b>{% endif %}
                             </div>
                         </div>
-                        <form action="{{ url_for('update_zoom_link') }}" method="POST">
+                        <form action="{{ url_for('adminview.update_zoom_link') }}" method="POST">
                             <div class="input-group">
                                 <input type="text" id="zoomLink" name="zoomLink" value="{{ admin.zoom_link }}"
                                        style="width: 140%">
@@ -102,10 +102,10 @@
     </div>
 
     <div id="button-container">
-        <a href="{{ url_for('feedback_dashboard') }}">
+        <a href="{{ url_for('adminview.feedback_dashboard') }}">
             <button class="button-feedback">Feedback</button>
         </a>
-        <a href="{{ url_for('admin_dashboard') }}">
+        <a href="{{ url_for('adminview.admin_dashboard') }}">
             <button class="button-register">Queueing list</button>
         </a>
         <a href="#" onclick="logout()">

@@ -4,7 +4,7 @@ from flask import Blueprint, render_template, request, redirect, url_for, jsonif
 from flask_login import login_required, current_user
 from sqlalchemy import func
 
-from models import Student, Admin, Feedback, Queue
+from models import db, Student, Admin, Feedback, Queue
 from sms import send_sms_vonage
 
 studentview = Blueprint('studentview', __name__)
