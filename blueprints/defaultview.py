@@ -52,7 +52,7 @@ def login():
 def login_page():
     #     show error message if login failed
     error = request.args.get('error')
-    return render_template('login.html', error=error)
+    return render_template('defaultview.login.html', error=error)
 
 
 @defaultview.route('/logout', methods=['GET', 'POST'])  # LOGOUT
@@ -82,4 +82,4 @@ def logout():
     logout_user()
 
     flash('Logged out successfully', 'success')
-    return redirect(url_for('defaultview.login_page'))
+    return redirect(url_for('defaultview.login'))
