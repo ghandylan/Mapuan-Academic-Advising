@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_login import LoginManager
-from flask_sqlalchemy import SQLAlchemy
+from models import db
 
 
 def create_app():
@@ -36,7 +36,6 @@ def create_app():
     from blueprints.defaultview import defaultview
     app.register_blueprint(defaultview)
 
-    db = SQLAlchemy(app)
     db.init_app(app)
 
     return app
