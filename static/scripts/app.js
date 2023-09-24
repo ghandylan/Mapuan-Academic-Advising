@@ -1,4 +1,4 @@
-const logoutUrl = "{{ url_for('logout') }}";
+const logoutUrl = "{{ url_for('defaultview.logout') }}";
 
 function logout() {
     if (confirm('Are you sure you want to logout?')) {

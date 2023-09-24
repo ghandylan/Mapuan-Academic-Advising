@@ -25,7 +25,7 @@
 
         setInterval(function () {
             $.ajax({
-                url: '{{ url_for("admin_dashboard") }}',
+                url: '{{ url_for("adminview.admin_dashboard") }}',
                 type: 'GET',
                 success: function (data) {
                     // Update the content of the page with the new data returned by the server
@@ -34,7 +34,7 @@
             });
         }, 5000); // Send requests every 5 seconds
 
-        const logoutUrl = "{{ url_for('logout') }}";
+        const logoutUrl = "{{ url_for('defaultview.logout') }}";
 
         function logout() {
             // Check if there are any students with queue status other than "Fulfilled"
@@ -129,7 +129,7 @@
             <a href="#" onclick="logout()">
                 <button class="button-out">Log Out</button>
             </a>
-            <a href="{{ url_for('edit_zoom') }}">
+            <a href="{{ url_for('adminview.edit_zoom') }}">
                 <button class="button-register">Go to Profile</button>
             </a>
         </div>
