@@ -18,8 +18,8 @@ class Student(db.Model, UserMixin):
     student_additional_comment = db.Column(String(255))
     queue_order = db.Column(Integer)
     queue_status = db.Column(String(255))
-    is_admin = db.Column(Boolean, nullable=False, default=False)
     sms_sent = db.Column(Boolean, nullable=False, default=False)
+    role = db.Column(String(255), nullable=False, default="student")
 
     queue_ID = db.Column(Integer, ForeignKey('queue.queue_ID'))
     queue = relationship("Queue", backref="students")
@@ -43,7 +43,7 @@ class Admin(db.Model, UserMixin):
     available = db.Column(Boolean, nullable=False, default=True)
     zoom_link = db.Column(String(255))
     status = db.Column(String(255))
-    is_admin = db.Column(Boolean, nullable=False, default=True)
+    role = db.Column(String(255), nullable=False, default="admin")
 
     def is_active(self):
         return True

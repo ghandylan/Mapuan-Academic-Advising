@@ -57,7 +57,7 @@
 <div class="body-container">
     <header class="header">
         <img src="../../static/img/mymapua.png" alt="Logo">
-        {% if user.admin_number %}
+        {% if current_user.admin_number %}
             <h1>Welcome, {{ username }}!</h1>
             <p>You are logged in as an admin.</p>
         {% endif %}
@@ -110,11 +110,11 @@
                                         </select>
                                     </label>
                                 </div>
-                                <form method="POST" action="{{ url_for('admin_dashboard') }}">
+                                <form method="POST" action="{{ url_for('adminview.admin_dashboard') }}">
                                     <input type="hidden" name="student_number" value="{{ student.student_number }}">
                                     <input type="hidden" name="action" value="check">
                                     <button type="submit" class="check-button">
-                                        <i class="fas fa-check"></i>
+                                        <i class="fas fa-check">OK</i>
                                     </button>
                                 </form>
                             </div>

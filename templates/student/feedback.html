@@ -35,7 +35,7 @@
     </div>
 
     <div class="feedback-form">
-        <form method="POST" action="{{ url_for('feedback') }}" onsubmit="return validateForm();">
+        <form method="POST" action="{{ url_for('studentview.feedback') }}" onsubmit="return validateForm();">
             <label for="rating">How was your experience?</label>
             <div class="smiley-container">
                 <input type="radio" name="rating" value="excellent" id="excellent">
