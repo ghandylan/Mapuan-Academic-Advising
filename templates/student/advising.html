@@ -28,7 +28,7 @@
         <img src="../../static/img/mymapua.png" alt="My Image" style="max-width: 150px;">
     </div>
 
-    <form action="{{ url_for('student_register') }}" method="post" required>
+    <form action="{{ url_for('studentview.student_register') }}" method="post" required>
         <div class="left">
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" placeholder="Dela Cruz, Juan A." value="{{ user.student_name }}"

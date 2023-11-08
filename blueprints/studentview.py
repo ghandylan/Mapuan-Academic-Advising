@@ -5,13 +5,20 @@ from flask_login import login_required, current_user
 from sqlalchemy import func
 
 from models import db, Student, Admin, Feedback, Queue
+from rbac import role_required
 from sms import send_sms_vonage
 
 studentview = Blueprint('studentview', __name__)
 
 
+def redirect_if_authenticated(username=None):
+    if current_user.is_authenticated:
+        return redirect(url_for('student_view.student_dashboard', username=username or current_user.username))
+
+
 @studentview.route('/student_dashboard', methods=['GET', 'POST'])  # STUDENT VIEW
 @login_required
+@role_required('student')
 def student_dashboard():
     # check if user is logged in
     user_id = current_user.get_id()
@@ -64,6 +71,7 @@ def student_dashboard():
 
 @studentview.route('/student_register', methods=['GET', 'POST'])  # STUDENT VIEW
 @login_required
+@role_required('student')
 def student_register():
     user_id = current_user.get_id()
     user = Student.query.get(user_id)
@@ -87,7 +95,7 @@ def student_register():
         message = f'Hi {user.student_name}, you are now in the queue. Your adviser is {adviser_in_charge}.{newline}{newline}Please wait for your turn and do not close the page. You will receive your SMS once it is you are ready to be advised.{newline}{newline}Thank you!'
         send_sms_vonage(formatted_number, message)
         print(message)
-        return redirect(url_for('waiting_page'))
+        return redirect(url_for('studentview.waiting_page'))
 
     # if system detects the that user is ready to be advised
     if queue_order == 1 and not user.sms_sent:
@@ -102,6 +110,7 @@ def student_register():
 
 @studentview.route('/waiting_page', methods=['GET', 'POST'])  # STUDENT VIEW
 @login_required
+@role_required('student')
 def waiting_page():
     user_id = current_user.get_id()
     user = Student.query.get(user_id)
@@ -122,6 +131,7 @@ def waiting_page():
 
 @studentview.route('/waiting-page')  # STUDENT VIEW
 @login_required
+@role_required('student')
 def dummy_zoom():
     user_id = current_user.get_id()
     user = Student.query.get(user_id)
@@ -139,6 +149,7 @@ def dummy_zoom():
 
 @studentview.route('/get_queue_status')  # STUDENT VIEW 1 usage in zoom.html and 1 usage in waiting-page.html (AJAX)
 @login_required
+@role_required('student')
 def get_queue_status():
     user_id = current_user.get_id()
     user = Student.query.get(user_id)
@@ -149,6 +160,7 @@ def get_queue_status():
 
 @studentview.route('/feedback', methods=['GET', 'POST'])  # STUDENT VIEW 1 form usage in feedback.html
 @login_required
+@role_required('student')
 def feedback():
     if request.method == 'POST':
         now = datetime.now()
@@ -176,7 +188,7 @@ def feedback():
         user.sms_sent = False
         db.session.add(student_feedback)
         db.session.commit()
-        return redirect(url_for('exit_confirmation'))
+        return redirect(url_for('studentview.exit_confirmation'))
 
     #     if user wants to log out
     return render_template('student/feedback.html')
@@ -184,17 +196,19 @@ def feedback():
 
 @studentview.route('/faq', methods=['GET', 'POST'])  # STUDENT VIEW
 @login_required
+@role_required('student')
 def faq():
     return render_template('student/faq-page.html')
 
 
 @studentview.route('/exit_confirmation', methods=['GET', 'POST'])  # STUDENT VIEW
 @login_required
+@role_required('student')
 def exit_confirmation():
     if request.method == 'POST':
         if 'Yes' in request.form:
-            return redirect(url_for('student_dashboard'))
+            return redirect(url_for('studentview.student_dashboard'))
         else:
-            return redirect(url_for('logout'))
+            return redirect(url_for('defaultview.logout'))
 
     return render_template('student/exit-confirmation.html')

@@ -1,10 +1,18 @@
 from flask import Blueprint, redirect, url_for, request, render_template, flash
+from flask_login import login_user, current_user, login_required, logout_user
 from sqlalchemy import asc
 
 from models import db, Student, Admin, Queue
-from flask_login import login_user, current_user, login_required, logout_user
 
 defaultview = Blueprint('defaultview', __name__)
+
+
+def redirect_if_authenticated(username=None):
+    if current_user.is_authenticated:
+        if current_user.role == "admin":
+            return redirect(url_for('adminview.admin_dashboard', username=username or current_user.username))
+        else:
+            return redirect(url_for('studentview.student_dashboard', username=username or current_user.username))
 
 
 @defaultview.route('/')  # HOME PAGE
@@ -58,7 +66,7 @@ def login_page():
 @defaultview.route('/logout', methods=['GET', 'POST'])  # LOGOUT
 @login_required
 def logout():
-    if current_user.is_admin:
+    if current_user.role == "admin":
         students = db.session.query(Student).filter(Student.queue_ID == current_user.admin_id).order_by(
             asc(Student.queue_order)).count()
         if students > 0:

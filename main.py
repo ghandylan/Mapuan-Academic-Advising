@@ -39,6 +39,11 @@ def create_app():
 
     db.init_app(app)
 
+    # with app.app_context():
+    #     admin_init = Admin.query.filter_by(admin_number=1).first()
+    #     if admin_init is None:
+    #         pass
+
     return app
 
 
