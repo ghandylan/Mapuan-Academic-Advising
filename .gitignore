@@ -2,3 +2,5 @@
 *.pyc
 /migrations/
 /.idea/
+/venv/
+qodana.yaml

@@ -1,15 +1,13 @@
 from flask import Flask
 from flask_login import LoginManager
 from models import db
+from config import Config
+from flask_migrate import Migrate
 
 
 def create_app():
     app = Flask(__name__)
-
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/academic_advising'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-    app.config['SECRET_KEY'] = 'secret'
-    app.config['SESSION_TYPE'] = 'filesystem'
+    app.config.from_object(Config)
 
     from models import Admin, Student
     login_manager = LoginManager()
@@ -35,6 +33,9 @@ def create_app():
 
     from blueprints.defaultview import defaultview
     app.register_blueprint(defaultview)
+
+    migrate = Migrate(app, db)
+    migrate.init_app(app, db)
 
     db.init_app(app)
 

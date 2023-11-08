@@ -52,7 +52,7 @@ def login():
 def login_page():
     #     show error message if login failed
     error = request.args.get('error')
-    return render_template('defaultview.login.html', error=error)
+    return render_template('login.html', error=error)
 
 
 @defaultview.route('/logout', methods=['GET', 'POST'])  # LOGOUT
